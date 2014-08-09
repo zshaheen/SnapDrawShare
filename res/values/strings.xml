@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SnapDrawShare</string>
+    <string name="action_settings">Settings</string>
+    <!-- MainActivity -->
+	<string name="button_snap">Snap</string>
+	<string name="button_draw">Draw</string>
+	<string name="button_share">Share</string>
+	<string name="button_feedback">Feedback</string>
+</resources>
