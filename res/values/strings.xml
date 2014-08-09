@@ -4,8 +4,11 @@
     <string name="app_name">SnapDrawShare</string>
     <string name="action_settings">Settings</string>
     <!-- MainActivity -->
-	<string name="button_snap">Snap</string>
-	<string name="button_draw">Draw</string>
-	<string name="button_share">Share</string>
-	<string name="button_feedback">Feedback</string>
+    <string name="button_snap">Snap</string>
+    <string name="button_draw">Draw</string>
+    <string name="button_share">Share</string>
+    <string name="button_feedback">Feedback</string>
+    <string name="title_activity_feedback_main">Send Feedback</string>
+    <string name="hello_world">Hello world!</string>
+
 </resources>

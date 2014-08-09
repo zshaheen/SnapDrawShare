@@ -78,8 +78,8 @@ public class MainActivity extends Activity {
 	}
 	
 	private void onFeedbackButton() {
-		//Intent intent = new Intent(this, FeedbackMainActivity.class);
-    	//startActivity(intent);	
+		Intent intent = new Intent(this, FeedbackMainActivity.class);
+    	startActivity(intent);
     }
     
     

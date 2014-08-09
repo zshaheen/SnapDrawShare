@@ -32,10 +32,12 @@ public final class R {
         public static final int button_snap=0x7f080000;
     }
     public static final class layout {
-        public static final int activity_main=0x7f030000;
+        public static final int activity_feedback_main=0x7f030000;
+        public static final int activity_main=0x7f030001;
     }
     public static final class menu {
-        public static final int main=0x7f070000;
+        public static final int feedback_main=0x7f070000;
+        public static final int main=0x7f070001;
     }
     public static final class string {
         public static final int action_settings=0x7f050001;
@@ -46,6 +48,8 @@ public final class R {
         /**  MainActivity 
          */
         public static final int button_snap=0x7f050002;
+        public static final int hello_world=0x7f050007;
+        public static final int title_activity_feedback_main=0x7f050006;
     }
     public static final class style {
         /** 
