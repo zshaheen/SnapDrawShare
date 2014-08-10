@@ -10,5 +10,7 @@
     <string name="button_feedback">Feedback</string>
     <string name="title_activity_feedback_main">Send Feedback</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_share_main">Share a picture</string>
+    <string name="title_activity_snap_main">Snap a picture</string>
 
 </resources>

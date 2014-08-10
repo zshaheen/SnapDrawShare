@@ -66,15 +66,18 @@ public class MainActivity extends Activity {
     
     
     private void onSnapButton() {
-    	
+    	Intent intent = new Intent(this, SnapMainActivity.class);
+    	startActivity(intent);
     }
     
 	private void onDrawButton() {
-	    	
-	    }
+		//Intent intent = new Intent(this, DrawMainActivity.class);
+    	//startActivity(intent);
+	}
 	
 	private void onShareButton() {
-		
+		Intent intent = new Intent(this, ShareMainActivity.class);
+    	startActivity(intent);
 	}
 	
 	private void onFeedbackButton() {
