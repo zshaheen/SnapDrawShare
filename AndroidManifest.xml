@@ -65,6 +65,24 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.zshapps.snapdrawshare.MainActivity" />
         </activity>
+        <activity
+            android:name="com.zshapps.snapdrawshare.DrawColorActivity"
+            android:label="@string/title_activity_draw_color"
+            android:parentActivityName="com.zshapps.snapdrawshare.DrawMainActivity"
+            android:theme="@android:style/Theme.Holo.Light.Dialog" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.zshapps.snapdrawshare.DrawMainActivity" />
+        </activity>
+        <activity
+            android:name="com.zshapps.snapdrawshare.DrawResizeBrushActivity"
+            android:label="@string/title_activity_draw_resize_brush"
+            android:parentActivityName="com.zshapps.snapdrawshare.DrawMainActivity"
+            android:theme="@android:style/Theme.Holo.Light.Dialog" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.zshapps.snapdrawshare.DrawMainActivity" />
+        </activity>
     </application>
 
 </manifest>

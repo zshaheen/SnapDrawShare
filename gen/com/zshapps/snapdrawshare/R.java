@@ -35,39 +35,82 @@ public final class R {
          */
         public static final int activity_horizontal_margin=0x7f050000;
         public static final int activity_vertical_margin=0x7f050001;
+        public static final int color_image_size=0x7f050003;
         public static final int share_image_size=0x7f050002;
     }
     public static final class drawable {
-        public static final int gray=0x7f020000;
-        public static final int ic_launcher=0x7f020001;
+        public static final int black=0x7f020000;
+        public static final int blue=0x7f020001;
+        public static final int darkblue=0x7f020002;
+        public static final int gray=0x7f020003;
+        public static final int grey=0x7f020004;
+        public static final int ic_action_draw=0x7f020005;
+        public static final int ic_action_save=0x7f020006;
+        public static final int ic_action_share=0x7f020007;
+        public static final int ic_launcher=0x7f020008;
+        public static final int limegreen=0x7f020009;
+        public static final int maroon=0x7f02000a;
+        public static final int orange=0x7f02000b;
+        public static final int purple=0x7f02000c;
+        public static final int red=0x7f02000d;
+        public static final int skyblue=0x7f02000e;
+        public static final int white=0x7f02000f;
+        public static final int yellow=0x7f020010;
     }
     public static final class id {
-        public static final int action_settings=0x7f090006;
-        public static final int button_draw=0x7f090002;
-        public static final int button_feedback=0x7f090004;
-        public static final int button_share=0x7f090003;
-        public static final int button_snap=0x7f090001;
-        public static final int container=0x7f090000;
-        public static final int gridview=0x7f090005;
+        public static final int action_color_change=0x7f09000d;
+        public static final int action_draw=0x7f09000c;
+        public static final int action_erase=0x7f09000f;
+        public static final int action_redo=0x7f090011;
+        public static final int action_resize_brush=0x7f09000e;
+        public static final int action_save=0x7f090013;
+        public static final int action_settings=0x7f09000b;
+        public static final int action_share=0x7f090012;
+        public static final int action_undo=0x7f090010;
+        public static final int button_cancel=0x7f090004;
+        public static final int button_draw=0x7f090007;
+        public static final int button_feedback=0x7f090009;
+        public static final int button_ok=0x7f090005;
+        public static final int button_share=0x7f090008;
+        public static final int button_snap=0x7f090006;
+        public static final int circleimageview=0x7f090002;
+        public static final int drawing=0x7f090001;
+        public static final int gridview=0x7f09000a;
+        public static final int gridviewcolors=0x7f090000;
+        public static final int seekbar=0x7f090003;
     }
     public static final class layout {
-        public static final int activity_draw_main=0x7f030000;
-        public static final int activity_feedback_main=0x7f030001;
-        public static final int activity_main=0x7f030002;
-        public static final int activity_share_main=0x7f030003;
-        public static final int activity_snap_main=0x7f030004;
-        public static final int fragment_draw_main=0x7f030005;
-        public static final int fragment_share_main=0x7f030006;
+        public static final int activity_draw_color=0x7f030000;
+        public static final int activity_draw_main=0x7f030001;
+        public static final int activity_draw_resize_brush=0x7f030002;
+        public static final int activity_feedback_main=0x7f030003;
+        public static final int activity_main=0x7f030004;
+        public static final int activity_share_main=0x7f030005;
+        public static final int activity_snap_main=0x7f030006;
+        public static final int fragment_draw_main=0x7f030007;
+        public static final int fragment_share_main=0x7f030008;
     }
     public static final class menu {
-        public static final int draw_main=0x7f080000;
-        public static final int feedback_main=0x7f080001;
-        public static final int main=0x7f080002;
-        public static final int share_main=0x7f080003;
-        public static final int snap_main=0x7f080004;
+        public static final int draw_color=0x7f080000;
+        public static final int draw_main=0x7f080001;
+        public static final int draw_resize_brush=0x7f080002;
+        public static final int feedback_main=0x7f080003;
+        public static final int main=0x7f080004;
+        public static final int share_main=0x7f080005;
+        public static final int snap_main=0x7f080006;
     }
     public static final class string {
+        public static final int action_color_change=0x7f06000d;
+        public static final int action_draw=0x7f06000c;
+        public static final int action_erase=0x7f06000f;
+        public static final int action_redo=0x7f060012;
+        public static final int action_resize_brush=0x7f060010;
+        /**  Draw Activity 
+         */
+        public static final int action_save=0x7f06000b;
         public static final int action_settings=0x7f060001;
+        public static final int action_share=0x7f06000e;
+        public static final int action_undo=0x7f060011;
         public static final int app_name=0x7f060000;
         public static final int button_draw=0x7f060003;
         public static final int button_feedback=0x7f060005;
@@ -76,7 +119,9 @@ public final class R {
          */
         public static final int button_snap=0x7f060002;
         public static final int hello_world=0x7f060007;
+        public static final int title_activity_draw_color=0x7f060013;
         public static final int title_activity_draw_main=0x7f06000a;
+        public static final int title_activity_draw_resize_brush=0x7f060014;
         public static final int title_activity_feedback_main=0x7f060006;
         public static final int title_activity_share_main=0x7f060008;
         public static final int title_activity_snap_main=0x7f060009;

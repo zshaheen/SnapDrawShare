@@ -1,4 +1,27 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFCCCCCC"
+    android:orientation="vertical"
+    tools:context=".DrawMainActivity" >
+ 	
+	
+    <!--  Layout for canvas -->
+    <com.zshapps.snapdrawshare.DrawingView
+	    android:id="@+id/drawing"
+	    android:layout_width="fill_parent"
+	    android:layout_height="0dp"
+	    android:layout_marginBottom="3dp"
+	    android:layout_marginLeft="3dp"
+	    android:layout_marginRight="3dp"
+	    android:layout_marginTop="3dp"
+	    android:layout_weight="1"
+	    android:background="#FFFFFFFF" />
+
+</LinearLayout>
+
+<!-- <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
@@ -6,3 +29,4 @@
     tools:context="com.zshapps.snapdrawshare.DrawMainActivity"
     tools:ignore="MergeRootFrame" />
 
+-->

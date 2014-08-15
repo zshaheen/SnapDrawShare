@@ -14,4 +14,16 @@
     <string name="title_activity_snap_main">Snap a picture</string>
     <string name="title_activity_draw_main">Draw</string>
 
+    <!-- Draw Activity -->
+    <string name="action_save">Save</string>
+    <string name="action_draw">Draw</string>
+    <string name="action_color_change">Change color</string>
+    <string name="action_share">Share</string>
+    <string name="action_erase">Erase</string>
+    <string name="action_resize_brush">Resize Brush</string>
+    <string name="action_undo">Undo</string>
+    <string name="action_redo">Redo</string>
+    <string name="title_activity_draw_color">Choose a Color</string>
+    <string name="title_activity_draw_resize_brush">Resize Brush</string>
+
 </resources>
