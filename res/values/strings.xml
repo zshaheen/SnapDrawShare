@@ -12,5 +12,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_share_main">Share a picture</string>
     <string name="title_activity_snap_main">Snap a picture</string>
+    <string name="title_activity_draw_main">Draw</string>
 
 </resources>

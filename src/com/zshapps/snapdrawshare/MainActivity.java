@@ -1,9 +1,12 @@
 package com.zshapps.snapdrawshare;
 
 
+import java.io.File;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -27,6 +30,12 @@ public class MainActivity extends Activity {
         getActionBar().hide();
         
         setContentView(R.layout.activity_main);
+        
+        String dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/SnapDrawShare/";
+    	File newdir = new File(dir);
+    	if (!newdir.exists()) {
+    		newdir.mkdirs();
+    	}
 
         /*
          * BUTTONS
@@ -71,8 +80,8 @@ public class MainActivity extends Activity {
     }
     
 	private void onDrawButton() {
-		//Intent intent = new Intent(this, DrawMainActivity.class);
-    	//startActivity(intent);
+		Intent intent = new Intent(this, DrawMainActivity.class);
+    	startActivity(intent);
 	}
 	
 	private void onShareButton() {

@@ -81,14 +81,11 @@ public class ShareMainActivity extends Activity {
         	fileNames = path.list();
         }
         
+        Log.e("fileNames.length",""+fileNames.length);
+        
         prefix = path.getPath()+"/";
         
-        boolean once = true;
-        if(once)
-        	Log.e("prefix",fileNames[0]);
-        
-        
-        
+   
         //Caching the bitmaps
         final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
         //0.25 of main memory is allocated to the cache
@@ -105,7 +102,7 @@ public class ShareMainActivity extends Activity {
         
         //Create a gird view in activity_main.xml with id of 'gridview'
         GridView gridView = (GridView) findViewById(R.id.gridview);
-        Log.e("SHARE fileName length",""+fileNames.length);
+        ///Log.e("SHARE fileName length",""+fileNames.length);
         gridView.setAdapter(new ImageAdapter(this));
         
         
@@ -205,9 +202,9 @@ public class ShareMainActivity extends Activity {
             ImageView imageView;
             if (convertView == null) {  // if it's not recycled, initialize some attributes
                 imageView = new ImageView(mContext);
-                imageView.setLayoutParams(new GridView.LayoutParams(size, size));
+                imageView.setLayoutParams(new GridView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                imageView.setPadding(2, 2, 2, 2);
+                imageView.setPadding(0, 0, 0, 0);
             } else {
                 imageView = (ImageView) convertView;
             }
