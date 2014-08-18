@@ -1,5 +1,6 @@
 package com.zshapps.snapdrawshare;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -9,6 +10,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -23,6 +26,8 @@ public class SnapMainActivity extends Activity {
 	private static String keyStoredDate = "com.zshapps.snapdrawshare.storedDate";
 	private static String keyIncr = "com.zshapps.snapdrawshare.incr";
 	private int incr = 10;
+	private File photoFile = null;
+	private String filename = "temp";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +37,7 @@ public class SnapMainActivity extends Activity {
 		Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE); 
         if (cameraIntent.resolveActivity(getPackageManager()) != null) {
         	// Create the File where the photo should go
-        	File photoFile = null;
+        	
         	
         	try {
         		photoFile = createImageFile();
@@ -81,11 +86,11 @@ public class SnapMainActivity extends Activity {
     		newdir.mkdirs();
     	}
 	    
-	    String imageFileName = curDate + "_" + incr;
+	    //String imageFileName = curDate + "_" + incr;
+	    filename = curDate + "_" + incr;
+	    Log.e("IMGNAME", filename);
 	    
-	    Log.e("IMGNAME", imageFileName);
-	    
-	    File image = new File(newdir, imageFileName + ".png" );
+	    File image = new File(newdir, filename + ".png" );
 	    return image;
 	    
 	}
@@ -99,6 +104,34 @@ public class SnapMainActivity extends Activity {
 	        	//Increase incr by 1 and save back in SharedPrefs
 	    	    prefs.edit().putInt(keyIncr,incr+1).commit();
 	    	    Log.e("snap after finish", "het");
+	    	   
+	    	    /*
+	    	    //Now send this picture to the draw activity. Launch the draw activity as well.
+	    	    //Convert the file to a bitmap
+	    	    BitmapFactory.Options options = new BitmapFactory.Options();
+	    	    options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+	    	    Bitmap bitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath(), options);
+	    	    Log.i("photoFile path", photoFile.getAbsolutePath());
+	    	    
+	    	    //Convert bitmap to bytearray
+	    	    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+	    	    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+	    	    byte[] byteArray = stream.toByteArray();
+	    	    
+	    	    //Send byteArray to Intent
+	    	    Intent intent = new Intent(this, DrawMainActivity.class);
+	    	    intent.putExtra("PICTURE", byteArray);
+	    	    startActivity(intent);
+	    	    */
+	    	    
+	    	    
+	    	    //Just send the filename
+	    	    
+	    	    
+	    	    Intent intent = new Intent(this, DrawMainActivity.class);
+	    	    intent.putExtra("picture_name", filename);
+	    	    startActivity(intent);
+	    	    
 	    	    finish();
 	    	    
 	    	    //TODO: Launch the draw activity with this picture on the canvas
@@ -108,7 +141,7 @@ public class SnapMainActivity extends Activity {
     		else
     			/*
     			 *  If the user doesn't want to take picture, stop camera activity
-    			 *	Otherwise laging occurs
+    			 *	Otherwise lagging occurs
     			 */
     			finish();
         }

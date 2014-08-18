@@ -3,14 +3,9 @@ package com.zshapps.snapdrawshare;
 
 
 import android.app.Activity;
-import android.app.ActionBar;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -19,13 +14,11 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.os.Build;
+
 
 public class DrawColorActivity extends Activity {
 
 
-	//private DrawingView drawView;
-	//private int mPaintColor;
 	
 	private static Integer[] colors = {R.drawable.red ,
 			R.drawable.orange , R.drawable.yellow ,
@@ -148,7 +141,7 @@ public class DrawColorActivity extends Activity {
 	public class ColorAdapter extends BaseAdapter {
     	
         private Context mContext;
-        private int size = (int) getResources().getDimension(R.dimen.color_image_size);
+        //private int size = (int) getResources().getDimension(R.dimen.color_image_size);
        
         
         public ColorAdapter(Context c) {
@@ -174,9 +167,9 @@ public class DrawColorActivity extends Activity {
             ImageView imageView;
             if (convertView == null) {  // if it's not recycled, initialize some attributes
                 imageView = new ImageView(mContext);
-                imageView.setLayoutParams(new GridView.LayoutParams(size, size));
+                imageView.setLayoutParams(new GridView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                imageView.setPadding(2, 2, 2, 2);
+                imageView.setPadding(0, 0, 0, 0);
             } else {
                 imageView = (ImageView) convertView;
             }

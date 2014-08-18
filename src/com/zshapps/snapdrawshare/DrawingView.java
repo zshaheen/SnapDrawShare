@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
@@ -100,10 +101,12 @@ public class DrawingView extends View {
 		
 		
 		//tempBmp = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
+		/*
 		String dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/SnapDrawShare/";
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inPreferredConfig = Bitmap.Config.ARGB_8888;
 		tempBmp = BitmapFactory.decodeFile(dir+"pic.png",options);
+		*/
 		
 		mPath = new Path();
 	}
@@ -171,11 +174,30 @@ public class DrawingView extends View {
 			resizeBmp = Bitmap.createScaledBitmap(tempBmp, newWidth, h, false);
 			//Now calculate how off the width (offsetX) should be
 			xOffset = -(newWidth - canvasBitmap.getWidth())/2;
-		}
-		else if(sourceW >= sourceH) {
-			//landscape
 			
+			Log.i("newWidthPORTRAIT",""+newWidth);
 		}
+		
+		else {//if(sourceH < sourceW) {
+			//landscape
+			//rotate the bitmap 90 degress to the right
+			Matrix matrix = new Matrix();
+			matrix.postRotate(90);
+			Bitmap rotatedBitmap = Bitmap.createBitmap(tempBmp , 0, 0, tempBmp.getWidth(), tempBmp.getHeight(), matrix, true);
+
+			
+			int newWidth = (int) (h*(rotatedBitmap.getWidth()/rotatedBitmap.getHeight()));
+			Log.i("newWidthLANDSCAPE",""+newWidth);
+			
+			//Bitmap tempResizeBmp = Bitmap.createScaledBitmap(rotatedBitmap, newWidth, h, false);
+			
+			
+			
+			resizeBmp = Bitmap.createScaledBitmap(rotatedBitmap, newWidth, h, true);
+			//Now calculate how off the width (offsetX) should be
+			xOffset = -(newWidth - canvasBitmap.getWidth())/2;
+		}
+		
 		Log.i("offsetX", ""+xOffset);
 		/* orig
 		centerCropBitmap(canvasBitmap, w, h);

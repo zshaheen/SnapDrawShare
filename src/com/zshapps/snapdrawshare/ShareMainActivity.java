@@ -174,7 +174,7 @@ public class ShareMainActivity extends Activity {
     public class ImageAdapter extends BaseAdapter {
     	
         private Context mContext;
-        private int size = (int) getResources().getDimension(R.dimen.share_image_size);
+       // private int size = (int) getResources().getDimension(R.dimen.share_image_size);
         private Bitmap loadingBitmap = null;
         
         public ImageAdapter(Context c) {
@@ -208,7 +208,6 @@ public class ShareMainActivity extends Activity {
             } else {
                 imageView = (ImageView) convertView;
             }
-            
             
             loadBitmap(fileNames[position], imageView, loadingBitmap );
 

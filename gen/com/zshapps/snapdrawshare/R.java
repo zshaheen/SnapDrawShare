@@ -87,8 +87,6 @@ public final class R {
         public static final int activity_main=0x7f030004;
         public static final int activity_share_main=0x7f030005;
         public static final int activity_snap_main=0x7f030006;
-        public static final int fragment_draw_main=0x7f030007;
-        public static final int fragment_share_main=0x7f030008;
     }
     public static final class menu {
         public static final int draw_color=0x7f080000;

@@ -10,12 +10,15 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Bitmap.CompressFormat;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.NavUtils;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -47,18 +50,31 @@ public class DrawMainActivity extends Activity {
         getActionBar().setDisplayHomeAsUpEnabled(true);
         
         setContentView(R.layout.activity_draw_main);
+        
         drawView = (DrawingView)findViewById(R.id.drawing);
-	    
+        
+		
+        //get the fileName of the taken picture and load it
+        Intent intent = getIntent();
+        //String fileAbsolutePath = intent.getStringExtra("picture_path");
+        filename = intent.getStringExtra("picture_name");
+        
+        //Now load this picture and set it as the    
+        BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+		//drawView.tempBmp = BitmapFactory.decodeFile(dir+"pic.png",options);
+			
+		drawView.tempBmp = BitmapFactory.decodeFile(dir+filename+".png" , options);
     }
 
     
     private void saveFile() throws FileNotFoundException {
     	
-    	final String savePath = dir + filename+".png";
+    	final String savePath = dir + filename + ".png";
     	File file = new File(savePath);
     	if(file.exists()) {
     		AlertDialog.Builder nameCollision = new AlertDialog.Builder(this);
-    		nameCollision.setTitle("Uh oh");
+    		//nameCollision.setTitle("Uh oh");
     		TextView text = new TextView(this);
     		text.setText("A file with this name exists.\nReplace the existing file?");
     		text.setTextSize(18);
@@ -110,7 +126,9 @@ public class DrawMainActivity extends Activity {
     	final EditText input = new EditText(this);
     	
     	input.setInputType(InputType.TYPE_CLASS_TEXT);
-    	
+    	input.setText("My_Pic_"+filename);
+    	input.setSelectAllOnFocus(true);
+
     	final AlertDialog.Builder saveDialogBuilder = new AlertDialog.Builder(this);
     	saveDialogBuilder.setTitle("Save Drawing");
     	saveDialogBuilder.setView(input);
@@ -285,8 +303,8 @@ public class DrawMainActivity extends Activity {
 	            //return true;
 	            break;
         }
-      //return super.onOptionsItemSelected(item);
-    	return true;
+      return super.onOptionsItemSelected(item);
+    	//return true;
     }
 
 }

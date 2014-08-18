@@ -52,6 +52,7 @@
             android:name="com.zshapps.snapdrawshare.SnapMainActivity"
             android:label="@string/title_activity_snap_main"
             android:parentActivityName="com.zshapps.snapdrawshare.MainActivity"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoDisplay" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -60,7 +61,8 @@
         <activity
             android:name="com.zshapps.snapdrawshare.DrawMainActivity"
             android:label="@string/title_activity_draw_main"
-            android:parentActivityName="com.zshapps.snapdrawshare.MainActivity" >
+            android:parentActivityName="com.zshapps.snapdrawshare.MainActivity"
+            android:screenOrientation="portrait" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.zshapps.snapdrawshare.MainActivity" />
