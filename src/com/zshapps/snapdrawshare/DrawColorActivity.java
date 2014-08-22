@@ -122,10 +122,10 @@ public class DrawColorActivity extends Activity {
 	            		break;
 	            	
             	}
-            	DrawingView.setPaintColor(num);
-            	//DrawingView.drawPaint.setColor(num);
+            	//DrawingView.setPaintColor(num);
             	Intent resultIntent = new Intent();
         		resultIntent.putExtra("COLOR_INDEX", position);
+        		resultIntent.putExtra("COLOR_NUM", num);
         		setResult(Activity.RESULT_OK, resultIntent);
         		finish();
 				

@@ -35,7 +35,7 @@ public class DrawMainActivity extends Activity {
 	private Menu mMenu;
 	private DrawingView drawView;
 	private String dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/SnapDrawShare/";
-	//private Boolean firstSave = true, currFileSaved = false;
+	public Boolean fileSaved = false;
 	//Change this to correspond to the picture name that is loaded
 	private String filename = "temp";
 	
@@ -67,6 +67,20 @@ public class DrawMainActivity extends Activity {
 		drawView.tempBmp = BitmapFactory.decodeFile(dir+filename+".png" , options);
     }
 
+    private void actuallySaveFile(String path) {
+    	OutputStream stream = null;
+		try {
+			stream = new FileOutputStream(path);
+		} catch (FileNotFoundException e) {
+			Toast.makeText(getApplicationContext(), "Error creating file stream :(", Toast.LENGTH_LONG).show();
+			e.printStackTrace();
+		}
+		drawView.getDrawCache().compress(CompressFormat.PNG, 100, stream);
+		drawView.setDrawingCacheEnabled(false);
+    	//drawView.canvasBitmap.compress(CompressFormat.PNG, 100, stream);
+    	Toast.makeText(getApplicationContext(), "Image saved in Pictures/SnapDrawShare", Toast.LENGTH_LONG).show();
+    	fileSaved = true;
+    }
     
     private void saveFile() throws FileNotFoundException {
     	
@@ -82,18 +96,7 @@ public class DrawMainActivity extends Activity {
     		nameCollision.setView(text);
     		nameCollision.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
     	        public void onClick(DialogInterface dialog, int whichButton) {
-    	        	OutputStream stream = null;
-					try {
-						stream = new FileOutputStream(savePath);
-					} catch (FileNotFoundException e) {
-						// TODO Auto-generated catch block
-						Toast.makeText(getApplicationContext(), "Error creating file stream :(", Toast.LENGTH_LONG).show();
-						e.printStackTrace();
-					}
-					drawView.getDrawCache().compress(CompressFormat.PNG, 100, stream);
-					drawView.setDrawingCacheEnabled(false);
-    		    	//drawView.canvasBitmap.compress(CompressFormat.PNG, 100, stream);
-    		    	Toast.makeText(getApplicationContext(), "Image saved in Pictures/SnapDrawShare", Toast.LENGTH_LONG).show();
+    	        	actuallySaveFile(savePath);
     	        }
     	        
     	    });
@@ -106,62 +109,57 @@ public class DrawMainActivity extends Activity {
     	}
     	
     	else {
-    		OutputStream stream = null;
-			try {
-				stream = new FileOutputStream(savePath);
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				Toast.makeText(getApplicationContext(), "Error creating file stream :(", Toast.LENGTH_LONG).show();
-				e.printStackTrace();
-			}
-			drawView.getDrawCache().compress(CompressFormat.PNG, 100, stream);
-			drawView.setDrawingCacheEnabled(false);
-	    	//drawView.canvasBitmap.compress(CompressFormat.PNG, 100, stream);
-	    	Toast.makeText(getApplicationContext(), "Image saved in Pictures/SnapDrawShare", Toast.LENGTH_LONG).show();
+    		actuallySaveFile(savePath);
     	}
     }
     
     public void onSaveButton()  {
     	//open a dialog that allows the user to choose a name
-    	final EditText input = new EditText(this);
-    	
-    	input.setInputType(InputType.TYPE_CLASS_TEXT);
-    	input.setText("My_Pic_"+filename);
-    	input.setSelectAllOnFocus(true);
-
-    	final AlertDialog.Builder saveDialogBuilder = new AlertDialog.Builder(this);
-    	saveDialogBuilder.setTitle("Save Drawing");
-    	saveDialogBuilder.setView(input);
-		
-    	saveDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-	        public void onClick(DialogInterface dialog, int whichButton) {
-	        	filename = input.getText().toString();
-	        	try {
-	    			saveFile();
-	    		} catch (FileNotFoundException e) {
-	    			Toast.makeText(getApplicationContext(), "Error saving image :(", Toast.LENGTH_LONG).show();
-	    			e.printStackTrace();
-	    		}
-	        }
-   		});
-    	
-    	saveDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-	        public void onClick(DialogInterface dialog, int whichButton) {
-	        	dialog.cancel();
-        }});
-    	
-    	
-		final AlertDialog saveDialog = saveDialogBuilder.create();
-		saveDialog.show();
+    	if(!fileSaved) {
+	    	final EditText input = new EditText(this);
+	    	
+	    	input.setInputType(InputType.TYPE_CLASS_TEXT);
+	    	input.setText("My_Pic_"+filename);
+	    	input.setSelectAllOnFocus(true);
 	
-		input.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-    	    @Override
-    	    public void onFocusChange(View v, boolean hasFocus) {
-    	        if (hasFocus) {//(input.requestFocus()) {
-    	        	saveDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-    	        }
-    	    }
-    	});
+	    	final AlertDialog.Builder saveDialogBuilder = new AlertDialog.Builder(this);
+	    	saveDialogBuilder.setTitle("Save Drawing");
+	    	saveDialogBuilder.setView(input);
+			
+	    	saveDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+		        public void onClick(DialogInterface dialog, int whichButton) {
+		        	filename = input.getText().toString();
+		        	try {
+		    			saveFile();
+		    		} catch (FileNotFoundException e) {
+		    			Toast.makeText(getApplicationContext(), "Error saving image :(", Toast.LENGTH_LONG).show();
+		    			e.printStackTrace();
+		    		}
+		        }
+	   		});
+	    	
+	    	saveDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+		        public void onClick(DialogInterface dialog, int whichButton) {
+		        	dialog.cancel();
+	        }});
+	    	
+	    	
+			final AlertDialog saveDialog = saveDialogBuilder.create();
+			saveDialog.show();
+		
+			input.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+	    	    @Override
+	    	    public void onFocusChange(View v, boolean hasFocus) {
+	    	        if (hasFocus) {//(input.requestFocus()) {
+	    	        	saveDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+	    	        }
+	    	    }
+	    	});
+    	}
+    	else {
+    		//Just save it at dir+filename+".png"
+    		actuallySaveFile(dir + filename + ".png");
+    	}
     }
     
     public void onColorButton()  {
@@ -227,6 +225,8 @@ public class DrawMainActivity extends Activity {
     		MenuItem colorButton = (MenuItem) mMenu.findItem(R.id.action_color_change);
 			colorButton.setIcon(DrawColorActivity.getColor(colorIndex));
 			
+			int colorNum = data.getIntExtra("COLOR_NUM", 0);
+			drawView.setPaintColor(colorNum);
 		}
     	
     	else if(requestCode == SHARE_BUTTON_PIC /*&& resultCode == RESULT_OK*/) {

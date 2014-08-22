@@ -4,9 +4,11 @@ package com.zshapps.snapdrawshare;
 
 import java.util.ArrayList;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
@@ -14,11 +16,13 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
-import android.os.Environment;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -45,8 +49,6 @@ public class DrawingView extends View {
 
 	private float xOffset=0, yOffset=0;
 	
-	//private ArrayList<Path> paths = new ArrayList<Path>();
-	//private ArrayList<Paint> drawPaints = new ArrayList<Paint>();
 	
 	private ArrayList<pathAndPaint> strokes = new ArrayList<pathAndPaint>();
 	private ArrayList<pathAndPaint> redoStrokes = new ArrayList<pathAndPaint>();
@@ -86,7 +88,7 @@ public class DrawingView extends View {
 		
 		drawPath = new Path();
 		drawPaint = new Paint();
-		drawPaint.setColor(paintColor);
+		drawPaint.setColor(0xFF000000); //black
 		
 		scale = getResources().getDisplayMetrics().density;
 		
@@ -121,7 +123,7 @@ public class DrawingView extends View {
 					
 	}
 	
-	public static void setPaintColor(int color) {
+	public void setPaintColor(int color) {
 		paintColor = color;
 		drawPaint.setColor(paintColor);
 	}
@@ -190,10 +192,13 @@ public class DrawingView extends View {
 			float rotatedW = rotatedBitmap.getWidth(), rotatedH = rotatedBitmap.getHeight();
 			int newWidth = (int) ( h*(rotatedW/rotatedH) );
 
-
 			resizeBmp = Bitmap.createScaledBitmap(rotatedBitmap, newWidth, h, true);
 			//Now calculate how off the width (offsetX) should be
 			xOffset = -(newWidth - canvasBitmap.getWidth())/2;
+			
+			//Give a dialog to the user that they took a landscape picture
+			landscapeDialog();
+			
 		}
 		
 		Log.i("offsetX", ""+xOffset);
@@ -204,6 +209,43 @@ public class DrawingView extends View {
 		resizeBmp = tempBmp;//Bitmap.createScaledBitmap(tempBmp, w, h, false);
 		*/
 	
+	}
+	
+	private void landscapeDialog() {
+		final SharedPreferences prefs = getContext().getSharedPreferences("com.example.snapdrawshare", Context.MODE_PRIVATE);
+		final String landscapeDialogKey = "com.zshapps.snapdrawshare.landscapeDialog";
+		if (!prefs.contains(landscapeDialogKey)) {
+	    	prefs.edit().putBoolean(landscapeDialogKey, true).commit();
+	    }
+		
+		Boolean showLandscapeDialog = prefs.getBoolean(landscapeDialogKey, true);
+		
+		if(showLandscapeDialog) {
+			AlertDialog.Builder landscapeDialog = new AlertDialog.Builder(getContext());
+			
+			//The custom view with a TextView and CheckBox
+			View landscapeDialogView = View.inflate(getContext(), R.layout.activity_draw_main_landscape_dialog, null);
+			
+			TextView text = (TextView) landscapeDialogView.findViewById(R.id.landscapeTextView);
+			text.setText("\nLandscape pictures are flipped to portrait for now. Full landscape support is coming soon!");
+			text.setTextSize(18);
+			text.setGravity(Gravity.CENTER_HORIZONTAL);
+			
+			final CheckBox checkBox = (CheckBox) landscapeDialogView.findViewById(R.id.landscapeCheckBox);
+			checkBox.setText("Got it. Don't tell me again.");	
+			checkBox.setTextSize(18);
+			
+			landscapeDialog.setView(landscapeDialogView);
+			landscapeDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+		        public void onClick(DialogInterface dialog, int whichButton) {
+		        	if(checkBox.isChecked())
+		        		prefs.edit().putBoolean(landscapeDialogKey, false).commit();
+		        	dialog.cancel();
+		        }
+		        
+		    });
+			landscapeDialog.show();
+		}
 	}
 	
 	

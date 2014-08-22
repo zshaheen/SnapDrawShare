@@ -58,35 +58,38 @@ public final class R {
         public static final int yellow=0x7f020010;
     }
     public static final class id {
-        public static final int action_color_change=0x7f09000d;
-        public static final int action_draw=0x7f09000c;
-        public static final int action_erase=0x7f09000f;
-        public static final int action_redo=0x7f090011;
-        public static final int action_resize_brush=0x7f09000e;
-        public static final int action_save=0x7f090013;
-        public static final int action_settings=0x7f09000b;
-        public static final int action_share=0x7f090012;
-        public static final int action_undo=0x7f090010;
-        public static final int button_cancel=0x7f090004;
-        public static final int button_draw=0x7f090007;
-        public static final int button_feedback=0x7f090009;
-        public static final int button_ok=0x7f090005;
-        public static final int button_share=0x7f090008;
-        public static final int button_snap=0x7f090006;
-        public static final int circleimageview=0x7f090002;
+        public static final int action_color_change=0x7f09000f;
+        public static final int action_draw=0x7f09000e;
+        public static final int action_erase=0x7f090011;
+        public static final int action_redo=0x7f090013;
+        public static final int action_resize_brush=0x7f090010;
+        public static final int action_save=0x7f090015;
+        public static final int action_settings=0x7f09000d;
+        public static final int action_share=0x7f090014;
+        public static final int action_undo=0x7f090012;
+        public static final int button_cancel=0x7f090006;
+        public static final int button_draw=0x7f090009;
+        public static final int button_feedback=0x7f09000b;
+        public static final int button_ok=0x7f090007;
+        public static final int button_share=0x7f09000a;
+        public static final int button_snap=0x7f090008;
+        public static final int circleimageview=0x7f090004;
         public static final int drawing=0x7f090001;
-        public static final int gridview=0x7f09000a;
+        public static final int gridview=0x7f09000c;
         public static final int gridviewcolors=0x7f090000;
-        public static final int seekbar=0x7f090003;
+        public static final int landscapeCheckBox=0x7f090003;
+        public static final int landscapeTextView=0x7f090002;
+        public static final int seekbar=0x7f090005;
     }
     public static final class layout {
         public static final int activity_draw_color=0x7f030000;
         public static final int activity_draw_main=0x7f030001;
-        public static final int activity_draw_resize_brush=0x7f030002;
-        public static final int activity_feedback_main=0x7f030003;
-        public static final int activity_main=0x7f030004;
-        public static final int activity_share_main=0x7f030005;
-        public static final int activity_snap_main=0x7f030006;
+        public static final int activity_draw_main_landscape_dialog=0x7f030002;
+        public static final int activity_draw_resize_brush=0x7f030003;
+        public static final int activity_feedback_main=0x7f030004;
+        public static final int activity_main=0x7f030005;
+        public static final int activity_share_main=0x7f030006;
+        public static final int activity_snap_main=0x7f030007;
     }
     public static final class menu {
         public static final int draw_color=0x7f080000;
