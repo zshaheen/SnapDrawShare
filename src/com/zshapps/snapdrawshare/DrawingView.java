@@ -175,24 +175,22 @@ public class DrawingView extends View {
 			//Now calculate how off the width (offsetX) should be
 			xOffset = -(newWidth - canvasBitmap.getWidth())/2;
 			
-			Log.i("newWidthPORTRAIT",""+newWidth);
+			Log.i("portrait resize HEIGHT",""+h);
+			Log.i("portrait resize WIDTH",""+newWidth);
+			
+			//Log.i("newWidthPORTRAIT",""+newWidth);
 		}
 		
-		else {//if(sourceH < sourceW) {
-			//landscape
-			//rotate the bitmap 90 degress to the right
+		else {
 			Matrix matrix = new Matrix();
 			matrix.postRotate(90);
 			Bitmap rotatedBitmap = Bitmap.createBitmap(tempBmp , 0, 0, tempBmp.getWidth(), tempBmp.getHeight(), matrix, true);
 
-			
-			int newWidth = (int) (h*(rotatedBitmap.getWidth()/rotatedBitmap.getHeight()));
-			Log.i("newWidthLANDSCAPE",""+newWidth);
-			
-			//Bitmap tempResizeBmp = Bitmap.createScaledBitmap(rotatedBitmap, newWidth, h, false);
-			
-			
-			
+			//Must store rotatedBitmap height and width, otherwise newWidth is 0
+			float rotatedW = rotatedBitmap.getWidth(), rotatedH = rotatedBitmap.getHeight();
+			int newWidth = (int) ( h*(rotatedW/rotatedH) );
+
+
 			resizeBmp = Bitmap.createScaledBitmap(rotatedBitmap, newWidth, h, true);
 			//Now calculate how off the width (offsetX) should be
 			xOffset = -(newWidth - canvasBitmap.getWidth())/2;
