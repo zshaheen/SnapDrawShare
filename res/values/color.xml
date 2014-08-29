@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
-    <color name="share">#004D40</color>
+    <color name="snap">#33B5E5</color>
+    <color name="snap_click">#66E8FF</color>
+    <color name="draw">#E43539</color>
+    <color name="draw_click">#FF686C</color>
+    <color name="share">#679E37</color>
+    <color name="share_click">#99CC33</color>
+    <color name="feedback">#FCD207</color>
+    <color name="feedback_click">#FFEC21</color>
+    <color name="main_menu">#FFE9BA</color>
+    
     
     
     

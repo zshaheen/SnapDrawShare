@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">SnapDrawShare</string>
+    <string name="app_name">Snap Draw Share</string>
     <string name="action_settings">Settings</string>
     <!-- MainActivity -->
     <string name="button_snap">Snap</string>
@@ -9,7 +9,6 @@
     <string name="button_share">Share</string>
     <string name="button_feedback">Feedback</string>
     <string name="title_activity_feedback_main">Send Feedback</string>
-    <string name="hello_world">Hello world!</string>
     <string name="title_activity_share_main">Share a picture</string>
     <string name="title_activity_snap_main">Snap a picture</string>
     <string name="title_activity_draw_main">Draw</string>

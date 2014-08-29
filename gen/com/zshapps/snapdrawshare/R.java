@@ -11,19 +11,27 @@ public final class R {
     public static final class attr {
     }
     public static final class color {
-        public static final int article_title=0x7f04000b;
-        public static final int articlecolor=0x7f04000a;
-        public static final int black=0x7f040005;
-        public static final int blue=0x7f040007;
-        public static final int blueback=0x7f040009;
-        public static final int cachecolor=0x7f04000c;
-        public static final int date_color=0x7f040004;
-        public static final int gold=0x7f040008;
-        public static final int gray=0x7f040006;
-        public static final int orange=0x7f040001;
-        public static final int share=0x7f040000;
-        public static final int transparent=0x7f040003;
-        public static final int white=0x7f040002;
+        public static final int article_title=0x7f040013;
+        public static final int articlecolor=0x7f040012;
+        public static final int black=0x7f04000d;
+        public static final int blue=0x7f04000f;
+        public static final int blueback=0x7f040011;
+        public static final int cachecolor=0x7f040014;
+        public static final int date_color=0x7f04000c;
+        public static final int draw=0x7f040002;
+        public static final int draw_click=0x7f040003;
+        public static final int feedback=0x7f040006;
+        public static final int feedback_click=0x7f040007;
+        public static final int gold=0x7f040010;
+        public static final int gray=0x7f04000e;
+        public static final int main_menu=0x7f040008;
+        public static final int orange=0x7f040009;
+        public static final int share=0x7f040004;
+        public static final int share_click=0x7f040005;
+        public static final int snap=0x7f040000;
+        public static final int snap_click=0x7f040001;
+        public static final int transparent=0x7f04000b;
+        public static final int white=0x7f04000a;
     }
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 
@@ -41,45 +49,66 @@ public final class R {
     public static final class drawable {
         public static final int black=0x7f020000;
         public static final int blue=0x7f020001;
-        public static final int darkblue=0x7f020002;
-        public static final int gray=0x7f020003;
-        public static final int grey=0x7f020004;
-        public static final int ic_action_draw=0x7f020005;
-        public static final int ic_action_save=0x7f020006;
-        public static final int ic_action_share=0x7f020007;
-        public static final int ic_launcher=0x7f020008;
-        public static final int limegreen=0x7f020009;
-        public static final int maroon=0x7f02000a;
-        public static final int orange=0x7f02000b;
-        public static final int purple=0x7f02000c;
-        public static final int red=0x7f02000d;
-        public static final int skyblue=0x7f02000e;
-        public static final int white=0x7f02000f;
-        public static final int yellow=0x7f020010;
+        public static final int button_draw_sel=0x7f020002;
+        public static final int button_feedback_sel=0x7f020003;
+        public static final int button_share_sel=0x7f020004;
+        public static final int button_snap_sel=0x7f020005;
+        public static final int darkblue=0x7f020006;
+        public static final int draw_icon=0x7f020007;
+        public static final int draw_text=0x7f020008;
+        public static final int feedback_icon=0x7f020009;
+        public static final int feedback_text=0x7f02000a;
+        public static final int feedback_text_large=0x7f02000b;
+        public static final int gray=0x7f02000c;
+        public static final int grey=0x7f02000d;
+        public static final int ic_action_draw=0x7f02000e;
+        public static final int ic_action_save=0x7f02000f;
+        public static final int ic_action_share=0x7f020010;
+        public static final int ic_launcher=0x7f020011;
+        public static final int limegreen=0x7f020012;
+        public static final int maroon=0x7f020013;
+        public static final int orange=0x7f020014;
+        public static final int purple=0x7f020015;
+        public static final int red=0x7f020016;
+        public static final int share_icon=0x7f020017;
+        public static final int share_text=0x7f020018;
+        public static final int skyblue=0x7f020019;
+        public static final int snap_icon=0x7f02001a;
+        public static final int snap_text=0x7f02001b;
+        public static final int white=0x7f02001c;
+        public static final int yellow=0x7f02001d;
     }
     public static final class id {
-        public static final int action_color_change=0x7f09000f;
-        public static final int action_draw=0x7f09000e;
-        public static final int action_erase=0x7f090011;
-        public static final int action_redo=0x7f090013;
-        public static final int action_resize_brush=0x7f090010;
-        public static final int action_save=0x7f090015;
-        public static final int action_settings=0x7f09000d;
-        public static final int action_share=0x7f090014;
-        public static final int action_undo=0x7f090012;
+        public static final int action_color_change=0x7f090017;
+        public static final int action_draw=0x7f090016;
+        public static final int action_erase=0x7f090019;
+        public static final int action_redo=0x7f09001b;
+        public static final int action_resize_brush=0x7f090018;
+        public static final int action_save=0x7f09001c;
+        public static final int action_settings=0x7f090015;
+        public static final int action_share=0x7f09001d;
+        public static final int action_undo=0x7f09001a;
         public static final int button_cancel=0x7f090006;
-        public static final int button_draw=0x7f090009;
-        public static final int button_feedback=0x7f09000b;
         public static final int button_ok=0x7f090007;
-        public static final int button_share=0x7f09000a;
-        public static final int button_snap=0x7f090008;
         public static final int circleimageview=0x7f090004;
+        public static final int drawText=0x7f09000d;
+        public static final int draw_button=0x7f09000b;
+        public static final int draw_icon=0x7f09000c;
         public static final int drawing=0x7f090001;
-        public static final int gridview=0x7f09000c;
+        public static final int feedbackText=0x7f090013;
+        public static final int feedback_button=0x7f090011;
+        public static final int feedback_icon=0x7f090012;
+        public static final int gridview=0x7f090014;
         public static final int gridviewcolors=0x7f090000;
         public static final int landscapeCheckBox=0x7f090003;
         public static final int landscapeTextView=0x7f090002;
         public static final int seekbar=0x7f090005;
+        public static final int shareText=0x7f09000f;
+        public static final int share_button=0x7f09000e;
+        public static final int share_icon=0x7f090010;
+        public static final int snapText=0x7f090009;
+        public static final int snap_button=0x7f090008;
+        public static final int snap_icon=0x7f09000a;
     }
     public static final class layout {
         public static final int activity_draw_color=0x7f030000;
@@ -101,17 +130,17 @@ public final class R {
         public static final int snap_main=0x7f080006;
     }
     public static final class string {
-        public static final int action_color_change=0x7f06000d;
-        public static final int action_draw=0x7f06000c;
-        public static final int action_erase=0x7f06000f;
-        public static final int action_redo=0x7f060012;
-        public static final int action_resize_brush=0x7f060010;
+        public static final int action_color_change=0x7f06000c;
+        public static final int action_draw=0x7f06000b;
+        public static final int action_erase=0x7f06000e;
+        public static final int action_redo=0x7f060011;
+        public static final int action_resize_brush=0x7f06000f;
         /**  Draw Activity 
          */
-        public static final int action_save=0x7f06000b;
+        public static final int action_save=0x7f06000a;
         public static final int action_settings=0x7f060001;
-        public static final int action_share=0x7f06000e;
-        public static final int action_undo=0x7f060011;
+        public static final int action_share=0x7f06000d;
+        public static final int action_undo=0x7f060010;
         public static final int app_name=0x7f060000;
         public static final int button_draw=0x7f060003;
         public static final int button_feedback=0x7f060005;
@@ -119,13 +148,12 @@ public final class R {
         /**  MainActivity 
          */
         public static final int button_snap=0x7f060002;
-        public static final int hello_world=0x7f060007;
-        public static final int title_activity_draw_color=0x7f060013;
-        public static final int title_activity_draw_main=0x7f06000a;
-        public static final int title_activity_draw_resize_brush=0x7f060014;
+        public static final int title_activity_draw_color=0x7f060012;
+        public static final int title_activity_draw_main=0x7f060009;
+        public static final int title_activity_draw_resize_brush=0x7f060013;
         public static final int title_activity_feedback_main=0x7f060006;
-        public static final int title_activity_share_main=0x7f060008;
-        public static final int title_activity_snap_main=0x7f060009;
+        public static final int title_activity_share_main=0x7f060007;
+        public static final int title_activity_snap_main=0x7f060008;
     }
     public static final class style {
         /** 
@@ -142,11 +170,6 @@ public final class R {
         AppBaseTheme from res/values/styles.xml on API 11+ devices.
     
  API 11 theme customizations can go here. 
-
-        Base application theme for API 14+. This theme completely replaces
-        AppBaseTheme from BOTH res/values/styles.xml and
-        res/values-v11/styles.xml on API 14+ devices.
-    
  API 14 theme customizations can go here. 
          */
         public static final int AppBaseTheme=0x7f070000;
@@ -154,10 +177,19 @@ public final class R {
  All customizations that are NOT specific to a particular API-level can go here. 
          */
         public static final int AppTheme=0x7f070001;
+        /**  Draw Theme 
+         */
+        public static final int DrawTheme=0x7f070003;
+        public static final int DrawTheme_ActionBar=0x7f070004;
+        public static final int DrawTheme_ActionBar_Text=0x7f070005;
         /**  Share Theme 
          */
-        public static final int ShareTheme=0x7f070002;
-        public static final int ShareTheme_ActionBar=0x7f070003;
-        public static final int ShareTheme_ActionBar_Text=0x7f070004;
+        public static final int ShareTheme=0x7f070006;
+        public static final int ShareTheme_ActionBar=0x7f070007;
+        public static final int ShareTheme_ActionBar_Text=0x7f070008;
+        /**  Button Text Style 
+ Button Text Style 
+         */
+        public static final int button_text_style=0x7f070002;
     }
 }

@@ -9,6 +9,6 @@
     android:columnWidth="110dp"
     android:stretchMode="columnWidth"
     android:gravity="center"
-    android:background="#EFF2F0"
+    android:background="@color/main_menu"
     
 />

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Button Text Style -->
+	<style name="button_text_style" >
+		<item name="android:layout_width" >wrap_content</item>
+		<item name="android:layout_height" >match_parent</item>
+		<item name="android:gravity" >center</item>
+		<item name="android:enabled" >false</item>
+		<item name="android:textColor" >#ffffff</item>
+		<item name="android:fontFamily">sans-serif-light</item>
+		<item name="android:typeface" >normal</item>
+		<item name="android:textStyle" >normal</item>
+	</style>
+</resources>

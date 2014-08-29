@@ -1,6 +1,6 @@
 package com.zshapps.snapdrawshare;
 
-import java.io.ByteArrayOutputStream;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -10,8 +10,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -61,7 +59,7 @@ public class SnapMainActivity extends Activity {
 		//Maybe put strings in values/strings.xml
 		
 		
-	    prefs = this.getSharedPreferences("com.example.snapdrawshare", Context.MODE_PRIVATE);
+	    prefs = this.getSharedPreferences("com.zshapps.snapdrawshare", Context.MODE_PRIVATE);
 	    
 	    if (!prefs.contains(keyStoredDate)) {
 	    	prefs.edit().putString(keyStoredDate, curDate).commit();
@@ -103,7 +101,6 @@ public class SnapMainActivity extends Activity {
 	        	
 	        	//Increase incr by 1 and save back in SharedPrefs
 	    	    prefs.edit().putInt(keyIncr,incr+1).commit();
-	    	    Log.e("snap after finish", "het");
 	    	   
 	    	    /*
 	    	    //Now send this picture to the draw activity. Launch the draw activity as well.
@@ -127,9 +124,17 @@ public class SnapMainActivity extends Activity {
 	    	    
 	    	    //Just send the filename
 	    	    
-	    	    
 	    	    Intent intent = new Intent(this, DrawMainActivity.class);
+	    	    
+	    	    /*
+	    	    Bundle extras = new Bundle();
+	    	    extras.putString("picture_name", filename);
+	    	    extras.putString("FLAG", "SnapMainActivity");
+	    	    intent.putExtras(extras);
+	    	     */
 	    	    intent.putExtra("picture_name", filename);
+	    	    intent.putExtra("FLAG", "SnapMainActivity");
+	    	    
 	    	    startActivity(intent);
 	    	    
 	    	    finish();

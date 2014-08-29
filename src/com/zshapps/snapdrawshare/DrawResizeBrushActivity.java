@@ -2,8 +2,6 @@ package com.zshapps.snapdrawshare;
 
 
 import android.app.Activity;
-import android.app.ActionBar;
-import android.app.Fragment;
 import android.app.ActionBar.LayoutParams;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -11,16 +9,11 @@ import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
-import android.os.Build;
 
 public class DrawResizeBrushActivity extends Activity {
 

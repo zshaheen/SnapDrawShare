@@ -5,34 +5,121 @@
 	 android:paddingLeft="16dp"
 	 android:paddingRight="16dp"
 	 android:paddingTop="16dp"
-	 android:paddingBottom="16dp" >
+	 android:paddingBottom="16dp"
+	 android:background="@color/main_menu" >
+	 
 
-    <Button
-	    android:id="@+id/button_snap"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:text="@string/button_snap"
-	    android:layout_weight="1" />
-		
-    <Button
-	    android:id="@+id/button_draw"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:text="@string/button_draw"
-	    android:layout_weight="1" />
+    <RelativeLayout
+        android:id="@+id/snap_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_snap_sel" 
+        android:layout_weight="0.5"
+        android:layout_marginBottom="5dp"
+        android:clickable="true"
+        android:onClick="onSnapButton" >      
+
+         <TextView
+             android:id="@+id/snapText"
+             android:layout_alignParentLeft="true"
+			 android:layout_alignParentTop="true"
+			 android:layout_toLeftOf="@+id/snap_icon"
+             android:text="@string/button_snap"
+             style = "@style/button_text_style"/>
+        
+         <ImageView
+             android:id="@+id/snap_icon"
+             android:layout_width="wrap_content"
+             android:layout_height="match_parent"
+             android:src="@drawable/snap_icon"
+             android:scaleType="fitCenter"
+             android:layout_alignParentRight="true" 
+             android:adjustViewBounds="true" />
+         
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/draw_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_draw_sel"
+        android:layout_weight="0.5"
+        android:layout_marginBottom="5dp"
+        android:clickable="true" >
+
+         <ImageView
+             android:id="@+id/draw_icon"
+             android:layout_width="wrap_content"
+             android:layout_height="match_parent"
+             android:src="@drawable/draw_icon"
+             android:scaleType="fitCenter"
+             android:layout_alignParentLeft="true"
+             android:adjustViewBounds="true"/>
+         
+         <TextView
+             android:id="@+id/drawText"
+             android:layout_alignParentRight="true"
+			 android:layout_alignParentTop="true"
+			 android:layout_toRightOf="@+id/draw_icon"
+             android:text="@string/button_draw"
+             style = "@style/button_text_style"/>
+         
+    </RelativeLayout>
     
-    <Button
-        android:id="@+id/button_share"
+    
+    <RelativeLayout
+        android:id="@+id/share_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="@string/button_share" />
-	
-    <Button
-        android:id="@+id/button_feedback"
+        android:background="@drawable/button_share_sel"
+        android:layout_weight="0.5"
+        android:layout_marginBottom="5dp"
+        android:clickable="true" >
+         
+        <TextView
+             android:id="@+id/shareText"
+             android:layout_alignParentLeft="true"
+			 android:layout_alignParentTop="true"
+			 android:layout_toLeftOf="@+id/share_icon"
+             android:text="@string/button_share"
+             style = "@style/button_text_style" />
+    	
+         <ImageView
+             android:id="@+id/share_icon"
+             android:layout_width="wrap_content"
+             android:layout_height="match_parent"
+             android:src="@drawable/share_icon"
+             android:scaleType="fitCenter"
+             android:layout_alignParentRight="true" 
+             android:adjustViewBounds="true" />
+         
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:id="@+id/feedback_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.2"
-        android:text="@string/button_feedback" />
+        android:background="@drawable/button_feedback_sel"
+        android:layout_weight="0.6"
+        android:clickable="true" >
+        
+        <ImageView
+             android:id="@+id/feedback_icon"
+             android:layout_width="wrap_content"
+             android:layout_height="match_parent"
+             android:src="@drawable/feedback_icon"
+             android:scaleType="fitCenter"
+             android:layout_alignParentLeft="true"
+             android:adjustViewBounds="true"/>
+        
+        <TextView
+             android:id="@+id/feedbackText"
+             android:layout_alignParentRight="true"
+			 android:layout_alignParentTop="true"
+			 android:layout_toRightOf="@+id/feedback_icon"
+             android:text="@string/button_feedback"
+             style = "@style/button_text_style"/>
+        
+    </RelativeLayout>
     
 </LinearLayout>

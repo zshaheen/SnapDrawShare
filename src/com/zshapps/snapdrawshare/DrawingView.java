@@ -1,7 +1,6 @@
 package com.zshapps.snapdrawshare;
 
 
-
 import java.util.ArrayList;
 
 import android.app.AlertDialog;
@@ -36,8 +35,8 @@ public class DrawingView extends View {
 	public static Paint drawPaint;
 	private Paint canvasPaint;
 	//initial color
-	private static int paintColor = 0xFF000000;
-	private static int paintBrushSize = 5;
+	private static int paintColor;
+	private static int paintBrushSize;
 	//canvas
 	private Canvas drawCanvas;
 	//canvas bitmap
@@ -54,7 +53,7 @@ public class DrawingView extends View {
 	private ArrayList<pathAndPaint> redoStrokes = new ArrayList<pathAndPaint>();
 	private Path mPath;
 	
-	//private static int undoRedoSize = 3;
+	private Boolean changesMade;
 
 	
 	public class pathAndPaint {
@@ -85,16 +84,20 @@ public class DrawingView extends View {
 	
 	private void setupDrawing() {
 		
+		changesMade = false;
 		
 		drawPath = new Path();
 		drawPaint = new Paint();
-		drawPaint.setColor(0xFF000000); //black
+		
+		paintColor = 0xFF000000; //black
+		drawPaint.setColor(paintColor);
 		
 		scale = getResources().getDisplayMetrics().density;
 		
-		drawPaint.setAntiAlias(true);
+		paintBrushSize = 5;
 		drawPaint.setStrokeWidth((float) (paintBrushSize * scale + 0.5f));
-		//TODO look into setStyle and setStrokeJoin
+		
+		drawPaint.setAntiAlias(true);
 		drawPaint.setStyle(Paint.Style.STROKE);
 		drawPaint.setStrokeJoin(Paint.Join.ROUND);
 		drawPaint.setStrokeCap(Paint.Cap.ROUND);
@@ -133,7 +136,6 @@ public class DrawingView extends View {
 		
 	}
 	
-	
 	public static void setBrushSize(int size) {
 		paintBrushSize = size;
 		drawPaint.setStrokeWidth((float) (paintBrushSize * scale + 0.5f));
@@ -146,6 +148,14 @@ public class DrawingView extends View {
 	public Bitmap getDrawCache(){
 		setDrawingCacheEnabled(true);
 		return getDrawingCache();
+	}
+	
+	public Boolean getChangesMade() {
+		return changesMade;
+	}
+	
+	public void setChangesMade(Boolean val) {
+		changesMade = val;
 	}
 	
 	@Override
@@ -212,7 +222,7 @@ public class DrawingView extends View {
 	}
 	
 	private void landscapeDialog() {
-		final SharedPreferences prefs = getContext().getSharedPreferences("com.example.snapdrawshare", Context.MODE_PRIVATE);
+		final SharedPreferences prefs = getContext().getSharedPreferences("com.zshapps.snapdrawshare", Context.MODE_PRIVATE);
 		final String landscapeDialogKey = "com.zshapps.snapdrawshare.landscapeDialog";
 		if (!prefs.contains(landscapeDialogKey)) {
 	    	prefs.edit().putBoolean(landscapeDialogKey, true).commit();
@@ -381,6 +391,7 @@ public class DrawingView extends View {
 	
 	private void touch_start(float x, float y) 
 	{
+		changesMade = true;
 		redoStrokes.clear();
 		mPath.reset();
 		mPath.moveTo(x, y);
@@ -420,7 +431,7 @@ public class DrawingView extends View {
 	    drawPaint = new Paint();
 		drawPaint.setColor(paintColor);
 		drawPaint.setAntiAlias(true);
-		drawPaint.setStrokeWidth((float) (paintBrushSize * scale + 0.5f));
+		drawPaint.setStrokeWidth((int) (paintBrushSize * scale + 0.5f));
 		drawPaint.setStyle(Paint.Style.STROKE);
 		drawPaint.setStrokeJoin(Paint.Join.ROUND);
 		drawPaint.setStrokeCap(Paint.Cap.ROUND);

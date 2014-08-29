@@ -8,15 +8,16 @@ import java.io.OutputStream;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Bitmap.CompressFormat;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.app.NavUtils;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
@@ -36,10 +37,8 @@ public class DrawMainActivity extends Activity {
 	private DrawingView drawView;
 	private String dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/SnapDrawShare/";
 	public Boolean fileSaved = false;
-	//Change this to correspond to the picture name that is loaded
-	private String filename = "temp";
-	
-	
+	private String filename = "temp", flag = "MainActivity";
+
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,15 +55,75 @@ public class DrawMainActivity extends Activity {
 		
         //get the fileName of the taken picture and load it
         Intent intent = getIntent();
-        //String fileAbsolutePath = intent.getStringExtra("picture_path");
-        filename = intent.getStringExtra("picture_name");
+        flag = intent.getStringExtra("FLAG");
         
-        //Now load this picture and set it as the    
-        BitmapFactory.Options options = new BitmapFactory.Options();
-		options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-		//drawView.tempBmp = BitmapFactory.decodeFile(dir+"pic.png",options);
-			
-		drawView.tempBmp = BitmapFactory.decodeFile(dir+filename+".png" , options);
+        
+        if(flag.equals("SnapMainActivity") || flag.equals("ShareMainActivity")) {
+        	
+            filename = intent.getStringExtra("picture_name");
+            Log.e("intentFilename",filename);
+            //Now load this picture and set it as the    
+            BitmapFactory.Options options = new BitmapFactory.Options();
+    		options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+    		//drawView.tempBmp = BitmapFactory.decodeFile(dir+"pic.png",options);
+    			
+    		drawView.tempBmp = BitmapFactory.decodeFile(dir+filename+".png" , options);
+    		
+    		if(flag.equals("ShareMainActivity")) {
+    			fileSaved = true;
+    		}
+    		
+        }
+        
+        /*if(flag.equals("ShareMainActivity")) {
+        	
+        	filename = intent.getStringExtra("picture_name");
+            Log.e("intentFilename",filename);
+            //Now load this picture and set it as the    
+            BitmapFactory.Options options = new BitmapFactory.Options();
+    		options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+    		//drawView.tempBmp = BitmapFactory.decodeFile(dir+"pic.png",options);
+    			
+    		drawView.tempBmp = BitmapFactory.decodeFile(dir+filename+".png" , options);
+    		fileSaved = true;
+
+        }*/
+        
+        if(flag.equals("MainActivity") || flag.equals("ShareMainActivity_back") ) {
+        	
+        	SharedPreferences prefs = getBaseContext().getSharedPreferences("com.zshapps.snapdrawshare", Context.MODE_PRIVATE);
+    		String whitePicIncr = "com.zshapps.snapdrawshare.whitePicIncr";
+    		if (!prefs.contains(whitePicIncr)) {
+    	    	prefs.edit().putInt(whitePicIncr, 0).commit();
+    	    }
+    		
+        	filename = Integer.toString(prefs.getInt(whitePicIncr, 0));
+        	drawView.tempBmp = Bitmap.createBitmap(1000, 1000, Bitmap.Config.ARGB_8888);
+        	
+        	AlertDialog.Builder fromMainDialog = new AlertDialog.Builder(this);
+        	//final AlertDialog fromMainDialog = null;
+        	//fromMainDialog.setCancelable(false);
+        	
+        	CharSequence[] items = {"Load a blank canvas", "Load an existing image"};
+        	fromMainDialog.setItems(items, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    if(which == 0) {
+                    	dialog.dismiss();
+                    }
+                    
+                    if(which == 1) {
+                    	//Launch ShareMainActivity with the special flag
+                    	Intent intent = new Intent(getBaseContext(), ShareMainActivity.class);
+    		    	    
+    		    	    intent.putExtra("FLAG", "DrawMainActivity_Load");
+    		    	    
+    		    	    startActivity(intent);
+                    }
+                }
+        	});
+        	
+        	 fromMainDialog.show();
+        }
     }
 
     private void actuallySaveFile(String path) {
@@ -75,11 +134,23 @@ public class DrawMainActivity extends Activity {
 			Toast.makeText(getApplicationContext(), "Error creating file stream :(", Toast.LENGTH_LONG).show();
 			e.printStackTrace();
 		}
+		
 		drawView.getDrawCache().compress(CompressFormat.PNG, 100, stream);
 		drawView.setDrawingCacheEnabled(false);
-    	//drawView.canvasBitmap.compress(CompressFormat.PNG, 100, stream);
+		
     	Toast.makeText(getApplicationContext(), "Image saved in Pictures/SnapDrawShare", Toast.LENGTH_LONG).show();
     	fileSaved = true;
+    	drawView.setChangesMade(false);
+    	
+    	//Increment whitePicIncr in sharedPrefernes by 1
+    	if(flag.equals("MainActivity")) {
+    		SharedPreferences prefs = this.getSharedPreferences("com.zshapps.snapdrawshare", Context.MODE_PRIVATE);
+    		String whitePicIncr = "com.zshapps.snapdrawshare.whitePicIncr";
+    		int currentWhitePicIncr = prefs.getInt(whitePicIncr, 0);
+    	    prefs.edit().putInt(whitePicIncr, currentWhitePicIncr+1).commit();
+    		
+    	}
+    	
     }
     
     private void saveFile() throws FileNotFoundException {
@@ -237,7 +308,52 @@ public class DrawMainActivity extends Activity {
 		}
 	}
 
+
     
+    @Override
+    public void onBackPressed() {
+    	if(drawView.getChangesMade()) {
+        	
+        	//Ask the user if they want to save the file
+        	AlertDialog.Builder backDialog = new AlertDialog.Builder(this);
+						
+			TextView text = (TextView) new TextView(this);
+			text.setText("Changes have been made, do you want to save your drawing?");
+			text.setTextSize(18);
+			text.setGravity(Gravity.CENTER_HORIZONTAL);
+			
+			backDialog.setView(text);
+			backDialog.setTitle("Save File");
+			
+			backDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+		        public void onClick(DialogInterface dialog, int whichButton) {
+		        	onSaveButton();
+		        	//Calling finish() causes filesaving to not occur
+		        	//finish();
+		        }
+		        
+		    });
+			
+			backDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+		        public void onClick(DialogInterface dialog, int whichButton) {
+		        	
+		        	finish();
+		        }
+	        });
+			
+			backDialog.show();
+			
+        }
+        
+        else {
+        	if(flag.equals("ShareMainActivity_back")) {
+        		Intent intent = new Intent(this, MainActivity.class);
+            	startActivity(intent);
+        	}
+        	else
+        		super.onBackPressed();
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -256,9 +372,6 @@ public class DrawMainActivity extends Activity {
         int id = item.getItemId();
         
         switch(id) {
-        
-	        case R.id.action_settings:
-	        	return true;
 	        	
 	        case R.id.action_save:
 	        	onSaveButton();
@@ -272,7 +385,6 @@ public class DrawMainActivity extends Activity {
 				try {
 					onShareButton();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 					Toast.makeText(getApplicationContext(), "Error sharing file.", Toast.LENGTH_LONG).show();
 				}
@@ -299,10 +411,10 @@ public class DrawMainActivity extends Activity {
 	        	break;
 	        	
 	        case android.R.id.home:
-	            NavUtils.navigateUpFromSameTask(this);
-	            //return true;
-	            break;
+	        	onBackPressed();
+	        	return true;
         }
+        
       return super.onOptionsItemSelected(item);
     	//return true;
     }

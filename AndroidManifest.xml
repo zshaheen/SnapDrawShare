@@ -22,7 +22,7 @@
             android:name="com.zshapps.snapdrawshare.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:windowActionBar="false" >
+            android:theme="@android:style/Theme.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -62,7 +62,8 @@
             android:name="com.zshapps.snapdrawshare.DrawMainActivity"
             android:label="@string/title_activity_draw_main"
             android:parentActivityName="com.zshapps.snapdrawshare.MainActivity"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:theme="@style/DrawTheme" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.zshapps.snapdrawshare.MainActivity" />

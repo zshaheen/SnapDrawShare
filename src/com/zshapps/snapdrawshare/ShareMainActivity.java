@@ -1,34 +1,5 @@
 package com.zshapps.snapdrawshare;
 
-/*
-import java.io.File;
-import java.lang.ref.WeakReference;
-
-import android.app.Activity;
-import android.app.Fragment;
-import android.content.Context;
-import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.Environment;
-import android.util.Log;
-import android.util.LruCache;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.BaseAdapter;
-import android.widget.GridView;
-import android.widget.ImageView;
-*/
-
 
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -59,8 +30,8 @@ import android.widget.ImageView;
 public class ShareMainActivity extends Activity {
 
 	private String[] fileNames;
-	File path;
-	String prefix;
+	private File path;
+	private String prefix, flag;
 	private LruCache<String, Bitmap> mMemoryCache;
 	
 	
@@ -69,6 +40,13 @@ public class ShareMainActivity extends Activity {
     	
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_share_main);
+        
+        Intent intent = getIntent();
+        flag = intent.getStringExtra("FLAG");
+        
+        if(flag.equals("DrawMainActivity_Load")) {
+        	setTitle("Select a picture to load");
+        }
         
         final String dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/SnapDrawShare/";
         path = new File(dir);
@@ -111,19 +89,45 @@ public class ShareMainActivity extends Activity {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				
-				Intent sendPic = new Intent(Intent.ACTION_SEND); 
-            	sendPic.setType("image/*");
-            	
-            	Log.i("send this file",dir + fileNames[position]);
-            	sendPic.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + dir + fileNames[position]));
-            	
-            	startActivity(Intent.createChooser(sendPic, "Send picture"));
+				if(!flag.equals("DrawMainActivity_Load")) {
+					Intent sendPic = new Intent(Intent.ACTION_SEND); 
+	            	sendPic.setType("image/*");
+	            	
+	            	Log.i("send this file",dir + fileNames[position]);
+	            	sendPic.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + dir + fileNames[position]));
+	            	
+	            	startActivity(Intent.createChooser(sendPic, "Send picture"));
+				}
+				else {
+					//Just send the filename
+					Intent intent = new Intent(getBaseContext(), DrawMainActivity.class);
+					//remove .png from fileNames[position]
+		    	    String tempFileName = fileNames[position].replace(".png", "");
+		    	    intent.putExtra("picture_name", tempFileName);
+		    	    intent.putExtra("FLAG", "ShareMainActivity");
+		    	    
+		    	    startActivity(intent);
+				}
+				
 				
 			}
         });
         
         
     }
+	
+	@Override
+    public void onBackPressed() {
+		if(flag.equals("DrawMainActivity_Load")) {
+			Intent intent = new Intent(getBaseContext(), DrawMainActivity.class);
+    	    intent.putExtra("FLAG", "ShareMainActivity_back");
+    	    startActivity(intent);
+    	    //finish();//not sure if needed
+		}
+		else {
+			super.onBackPressed();
+		}
+	}
 	
     public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
         if (getBitmapFromMemCache(key) == null) {
