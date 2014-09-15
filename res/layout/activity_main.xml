@@ -8,7 +8,7 @@
 	 android:paddingBottom="16dp"
 	 android:background="@color/main_menu" >
 	 
-
+    
     <RelativeLayout
         android:id="@+id/snap_button"
         android:layout_width="match_parent"

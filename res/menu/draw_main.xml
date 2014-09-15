@@ -4,7 +4,7 @@
     
 
 	<item android:id="@+id/action_draw"
-          android:icon="@drawable/ic_action_draw"
+          android:icon="@drawable/ic_action_draw_black"
           android:title="@string/action_draw"
           android:showAsAction="always"  />
 	
@@ -14,22 +14,22 @@
           android:showAsAction="always"  />
 	
 	<item android:id="@+id/action_resize_brush"
-          android:icon="@drawable/ic_launcher"
+          android:icon="@drawable/ic_action_resize"
           android:title="@string/action_resize_brush"
           android:showAsAction="always"  />
 	
 	<item android:id="@+id/action_erase"
-          android:icon="@drawable/ic_launcher"
+          android:icon="@drawable/ic_action_erase"
           android:title="@string/action_erase"
           android:showAsAction="always"  />
 	
 	<item android:id="@+id/action_undo"
-          android:icon="@drawable/ic_launcher"
+          android:icon="@drawable/ic_action_undo"
           android:title="@string/action_undo"
           android:showAsAction="ifRoom"  />
 	
 	<item android:id="@+id/action_redo"
-          android:icon="@drawable/ic_launcher"
+          android:icon="@drawable/ic_action_redo"
           android:title="@string/action_redo"
           android:showAsAction="ifRoom"  />
 	

@@ -2,24 +2,29 @@ package com.zshapps.snapdrawshare;
 
 
 import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
+import android.provider.MediaStore;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 	
 	private TextView snapText, drawText, shareText, feedbackText;
-	//private Integer twice = 2;
 	private Boolean runFontCalibrate = true;
 	private SharedPreferences prefs;
 	private static String keySnapFont = "com.zshapps.snapdrawshare.keySnapFont";
@@ -27,6 +32,15 @@ public class MainActivity extends Activity {
 	private static String keyShareFont = "com.zshapps.snapdrawshare.keyShareFont";
 	private static String keyFeedbackFont = "com.zshapps.snapdrawshare.keyFeedbackFont";
 	private static String keyTextPadding = "com.zshapps.snapdrawshare.keyTextPadding";
+	//private ProgressBar spinner;
+
+	private static final int REQUEST_TAKE_PHOTO = 1;
+	private static String keyStoredDate = "com.zshapps.snapdrawshare.storedDate";
+	private static String keyIncr = "com.zshapps.snapdrawshare.incr";
+	private int incr = 10;
+	File photoFile = null;
+	private String filename = "temp";
+	
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,10 +49,10 @@ public class MainActivity extends Activity {
          * Hide top bar
          * getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         */
-        
-        
-        
         setContentView(R.layout.activity_main);
+        
+        //spinner = (ProgressBar)findViewById(R.id.progressBar1);
+        //spinner.setVisibility(View.GONE);
         
         String dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/SnapDrawShare/";
     	File newdir = new File(dir);
@@ -99,6 +113,14 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v){
             	onSnapButton();
+            	/*
+            	Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE); 
+                if (cameraIntent.resolveActivity(getPackageManager()) != null) {
+                	//cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+            		startActivityForResult(cameraIntent, 1);
+                	Toast.makeText(getApplicationContext(), "some message", Toast.LENGTH_LONG).show();
+                }
+            	*/
             }
         });
     	
@@ -134,7 +156,6 @@ public class MainActivity extends Activity {
     public void calibrateText(final TextView v, final String key) {
     	if(v.getLineCount() != 1) {
     		float currTextSize = v.getTextSize() - 1;
-        	Log.e("textview font SIZE", ""+v.getTextSize());
         	v.setTextSize(TypedValue.COMPLEX_UNIT_PX, currTextSize);
         	v.post(new Runnable() {
                  @Override
@@ -224,6 +245,7 @@ public class MainActivity extends Activity {
     }
     
     
+    /*
     @Override
     public void onBackPressed() {
     	//Always minimize back to main screen
@@ -232,12 +254,35 @@ public class MainActivity extends Activity {
     	startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     	startActivity(startMain);
 
-    }
+    }*/
     
     
     public void onSnapButton() {
-    	Intent intent = new Intent(this, SnapMainActivity.class);
-    	startActivity(intent);
+    	//Intent intent = new Intent(this, SnapMainActivity.class);
+    	//startActivity(intent);
+
+    		
+    		
+
+    		Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+    		
+    	    if (cameraIntent.resolveActivity(getPackageManager()) != null) {
+    	        	
+    	        	// Create the File where the photo should go        	        	
+    	        	try {
+    	        		photoFile = createImageFile();
+    	        	} catch (IOException ex) {
+    	        		Toast.makeText(getApplicationContext(), "Error saving picture from camera", Toast.LENGTH_LONG).show();
+    	            }
+    	        	
+    	        	// Continue only if the File was successfully created
+    	        	if (photoFile != null) {
+    	        		cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+    	        		startActivityForResult(cameraIntent, REQUEST_TAKE_PHOTO);
+    	        	}
+    	        }
+
+    
     }
     
     public void onDrawButton() {
@@ -255,6 +300,70 @@ public class MainActivity extends Activity {
     public void onFeedbackButton() {
 		Intent intent = new Intent(this, FeedbackMainActivity.class);
     	startActivity(intent);
+    }
+    
+    private File createImageFile() throws IOException {
+	    // Create an image file name
+		
+		String curDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
+		
+	    prefs = this.getSharedPreferences("com.zshapps.snapdrawshare", Context.MODE_PRIVATE);
+	    
+	    if (!prefs.contains(keyStoredDate)) {
+	    	prefs.edit().putString(keyStoredDate, curDate).commit();
+	    }
+	    
+	    if (!prefs.contains(keyIncr)) {
+	    	prefs.edit().putInt(keyIncr, 0).commit();
+	    }
+	    incr = prefs.getInt(keyIncr, 0);
+	    String storedDate = prefs.getString(keyStoredDate, new SimpleDateFormat("yyyyMMdd").format(new Date()));
+	    
+	    if(!storedDate.equals(curDate)) {
+	    	//set the counter to 0 and change store the value of currDate in the SharedPreferences 
+	    	prefs.edit().putInt(keyIncr,0).commit();
+	    	prefs.edit().putString(keyStoredDate,curDate).commit();
+	    	incr=0;
+	    }
+	    
+	    String dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/SnapDrawShare/";
+    	File newdir = new File(dir);
+    	if (!newdir.exists()) {
+    		newdir.mkdirs();
+    	}
+	    
+	    filename = curDate + "_" + incr;
+	    
+	    File image = new File(newdir, filename + ".png" );
+	    return image;
+	    
+	}
+    
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {  
+        if (requestCode == REQUEST_TAKE_PHOTO) {
+    		if(resultCode == RESULT_OK) {
+	        	Toast.makeText(getApplicationContext(), "Picture saved in Pictures/SnapDrawShare", Toast.LENGTH_LONG).show();
+	        	
+	        	//Increase incr by 1 and save back in SharedPrefs
+	    	    prefs.edit().putInt(keyIncr,incr+1).commit();
+	    	    
+	    	    //Just send the filename 
+	    	    Intent intent = new Intent(this, DrawMainActivity.class);
+	    	    intent.putExtra("picture_name", filename);
+	    	    intent.putExtra("picture_extension", "png");
+	    	    intent.putExtra("FLAG", "SnapMainActivity");	    	    
+	    	    startActivity(intent);
+	    	    
+	    	    finish();	    	    
+	    	    
+	        }  
+    		//else
+    			/*
+    			 *  If the user doesn't want to take picture, stop camera activity
+    			 *	Otherwise lagging occurs
+    			 */
+    			//finish();
+        }
     }
     
     

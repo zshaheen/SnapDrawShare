@@ -19,7 +19,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.InputType;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,7 +37,8 @@ public class DrawMainActivity extends Activity {
 	private String dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/SnapDrawShare/";
 	public Boolean fileSaved = false;
 	private String filename = "temp", flag = "MainActivity";
-
+	private Boolean drawButtonIcon = true, eraseButtonIcon = false;
+	private Thread t;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +52,8 @@ public class DrawMainActivity extends Activity {
         
         drawView = (DrawingView)findViewById(R.id.drawing);
         
-		
+        
+        
         //get the fileName of the taken picture and load it
         Intent intent = getIntent();
         flag = intent.getStringExtra("FLAG");
@@ -61,13 +62,14 @@ public class DrawMainActivity extends Activity {
         if(flag.equals("SnapMainActivity") || flag.equals("ShareMainActivity")) {
         	
             filename = intent.getStringExtra("picture_name");
-            Log.e("intentFilename",filename);
+            String extension = intent.getStringExtra("picture_extension");
             //Now load this picture and set it as the    
             BitmapFactory.Options options = new BitmapFactory.Options();
     		options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-    		//drawView.tempBmp = BitmapFactory.decodeFile(dir+"pic.png",options);
     			
-    		drawView.tempBmp = BitmapFactory.decodeFile(dir+filename+".png" , options);
+    		//drawView.tempBmp = BitmapFactory.decodeFile(dir+filename+".png" , options);
+    		drawView.tempBmp = BitmapFactory.decodeFile(dir+filename+"."+extension , options);
+    		
     		
     		if(flag.equals("ShareMainActivity")) {
     			fileSaved = true;
@@ -75,19 +77,6 @@ public class DrawMainActivity extends Activity {
     		
         }
         
-        /*if(flag.equals("ShareMainActivity")) {
-        	
-        	filename = intent.getStringExtra("picture_name");
-            Log.e("intentFilename",filename);
-            //Now load this picture and set it as the    
-            BitmapFactory.Options options = new BitmapFactory.Options();
-    		options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-    		//drawView.tempBmp = BitmapFactory.decodeFile(dir+"pic.png",options);
-    			
-    		drawView.tempBmp = BitmapFactory.decodeFile(dir+filename+".png" , options);
-    		fileSaved = true;
-
-        }*/
         
         if(flag.equals("MainActivity") || flag.equals("ShareMainActivity_back") ) {
         	
@@ -101,8 +90,6 @@ public class DrawMainActivity extends Activity {
         	drawView.tempBmp = Bitmap.createBitmap(1000, 1000, Bitmap.Config.ARGB_8888);
         	
         	AlertDialog.Builder fromMainDialog = new AlertDialog.Builder(this);
-        	//final AlertDialog fromMainDialog = null;
-        	//fromMainDialog.setCancelable(false);
         	
         	CharSequence[] items = {"Load a blank canvas", "Load an existing image"};
         	fromMainDialog.setItems(items, new DialogInterface.OnClickListener() {
@@ -113,8 +100,7 @@ public class DrawMainActivity extends Activity {
                     
                     if(which == 1) {
                     	//Launch ShareMainActivity with the special flag
-                    	Intent intent = new Intent(getBaseContext(), ShareMainActivity.class);
-    		    	    
+                    	Intent intent = new Intent(getBaseContext(), ShareMainActivity.class); 		    	    
     		    	    intent.putExtra("FLAG", "DrawMainActivity_Load");
     		    	    
     		    	    startActivity(intent);
@@ -122,10 +108,21 @@ public class DrawMainActivity extends Activity {
                 }
         	});
         	
-        	 fromMainDialog.show();
+        	fromMainDialog.show();
         }
     }
-
+    
+    public class DrawCacheThread implements Runnable {
+    	private OutputStream mStream;
+    	public DrawCacheThread(OutputStream stream) {
+    		mStream = stream;
+    	}
+    	
+    	public void run() {
+    		drawView.getDrawCache().compress(CompressFormat.PNG, 100, mStream);
+    	}
+    }
+    
     private void actuallySaveFile(String path) {
     	OutputStream stream = null;
 		try {
@@ -135,7 +132,11 @@ public class DrawMainActivity extends Activity {
 			e.printStackTrace();
 		}
 		
-		drawView.getDrawCache().compress(CompressFormat.PNG, 100, stream);
+		//drawView.getDrawCache().compress(CompressFormat.PNG, 100, stream);
+		Runnable r = new DrawCacheThread(stream);
+		t = new Thread(r);
+		t.start();
+
 		drawView.setDrawingCacheEnabled(false);
 		
     	Toast.makeText(getApplicationContext(), "Image saved in Pictures/SnapDrawShare", Toast.LENGTH_LONG).show();
@@ -159,11 +160,12 @@ public class DrawMainActivity extends Activity {
     	File file = new File(savePath);
     	if(file.exists()) {
     		AlertDialog.Builder nameCollision = new AlertDialog.Builder(this);
-    		//nameCollision.setTitle("Uh oh");
+
     		TextView text = new TextView(this);
     		text.setText("A file with this name exists.\nReplace the existing file?");
     		text.setTextSize(18);
     		text.setGravity(Gravity.CENTER);
+    		
     		nameCollision.setView(text);
     		nameCollision.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
     	        public void onClick(DialogInterface dialog, int whichButton) {
@@ -184,11 +186,38 @@ public class DrawMainActivity extends Activity {
     	}
     }
     
+    private void switchActionbarIcon(Boolean draw, Boolean erase) {
+    	
+    	if(draw && !drawButtonIcon) {
+			MenuItem drawButton = (MenuItem) mMenu.findItem(R.id.action_draw);
+			drawButton.setIcon(R.drawable.ic_action_draw_black);
+			drawButtonIcon = true;
+    	}
+    	
+    	if(!draw && drawButtonIcon) {
+			MenuItem drawButton = (MenuItem) mMenu.findItem(R.id.action_draw);
+			drawButton.setIcon(R.drawable.ic_action_draw);
+			drawButtonIcon = false;
+    	}
+    	
+    	if(erase && !eraseButtonIcon) {
+    		MenuItem eraseButton = (MenuItem) mMenu.findItem(R.id.action_erase);
+    		eraseButton.setIcon(R.drawable.ic_action_erase_black);
+    		eraseButtonIcon = true;
+    	}
+    	
+    	if(!erase && eraseButtonIcon) {
+    		MenuItem eraseButton = (MenuItem) mMenu.findItem(R.id.action_erase);
+    		eraseButton.setIcon(R.drawable.ic_action_erase);
+    		eraseButtonIcon = false;
+    	}
+    }
+    
     public void onSaveButton()  {
+    	
     	//open a dialog that allows the user to choose a name
     	if(!fileSaved) {
 	    	final EditText input = new EditText(this);
-	    	
 	    	input.setInputType(InputType.TYPE_CLASS_TEXT);
 	    	input.setText("My_Pic_"+filename);
 	    	input.setSelectAllOnFocus(true);
@@ -228,7 +257,6 @@ public class DrawMainActivity extends Activity {
 	    	});
     	}
     	else {
-    		//Just save it at dir+filename+".png"
     		actuallySaveFile(dir + filename + ".png");
     	}
     }
@@ -244,45 +272,28 @@ public class DrawMainActivity extends Activity {
     
     public void onShareButton() throws IOException  {
     	
-    	//First check with a bool if the currentpic is the most recent saved
-    	
     	//Create a tempfile to send
     	Intent sendPic = new Intent(Intent.ACTION_SEND); 
     	sendPic.setType("image/*");
-    	//sendPic.setType("*/*");
-    	
-    	/*File outputDir = getCacheDir(); // context being the Activity pointer
-    	File outputFile = File.createTempFile("SnapDrawShare_pic", ".png", outputDir);
-    	
-    	
-    	OutputStream stream = new FileOutputStream(outputFile);
-    	
-    	//drawView.setDrawingCacheEnabled(true);
-    	//ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
-    	//drawView.setDrawingCacheEnabled(true);
-    	drawView.getDrawCache().compress(CompressFormat.PNG, 100, stream);
-		
-    	Log.e("temp file path", ""+outputFile.getAbsolutePath());
-    	sendPic.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://"+outputFile.getAbsolutePath()) );
-    	
-    	*/
+
     	String savePath = dir + "SnapDrawShare.png";
     	//File file = new File(savePath);
     	OutputStream stream = new FileOutputStream(savePath);
     	
-    	drawView.getDrawCache().compress(CompressFormat.PNG, 100, stream);
+    	//drawView.getDrawCache().compress(CompressFormat.PNG, 100, stream);
+    	Runnable r = new DrawCacheThread(stream);
+		t = new Thread(r);
+		t.start();
+    	
 		drawView.setDrawingCacheEnabled(false);
 		
 		sendPic.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + savePath));
     	
-    	//SET cacheTHING back to true/false
     	startActivityForResult(Intent.createChooser(sendPic, "Send picture"), SHARE_BUTTON_PIC);
-    	//drawView.setDrawingCacheEnabled(false);
     	
     }
     
     public void onResizeBrushButton() {
-    	//launch a new activity
     	Intent intent = new Intent(this, DrawResizeBrushActivity.class);
     	startActivityForResult(intent, CHANGE_BRUSH_SIZE);
     }
@@ -309,9 +320,7 @@ public class DrawMainActivity extends Activity {
 	}
 
 
-    
-    @Override
-    public void onBackPressed() {
+    private void exitDraw(final String fromWhere) {
     	if(drawView.getChangesMade()) {
         	
         	//Ask the user if they want to save the file
@@ -331,13 +340,17 @@ public class DrawMainActivity extends Activity {
 		        	//Calling finish() causes filesaving to not occur
 		        	//finish();
 		        }
-		        
 		    });
 			
 			backDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
 		        public void onClick(DialogInterface dialog, int whichButton) {
-		        	
-		        	finish();
+		        	if(fromWhere == "back_button")
+		        		finish();
+		        	else if(fromWhere == "up_button") {
+		        		Intent intent = new Intent(DrawMainActivity.this, MainActivity.class);
+		        		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		        	    startActivity(intent);
+		        	}
 		        }
 	        });
 			
@@ -347,12 +360,40 @@ public class DrawMainActivity extends Activity {
         
         else {
         	if(flag.equals("ShareMainActivity_back")) {
-        		Intent intent = new Intent(this, MainActivity.class);
-            	startActivity(intent);
+        		if(t == null || !t.isAlive()) {
+	        		Intent intent = new Intent(this, MainActivity.class);
+	        		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+	            	startActivity(intent);
+        		}
+        		else {
+        			Toast.makeText(getApplicationContext(), "Still working, please wait.", Toast.LENGTH_LONG).show();
+        		}
         	}
-        	else
-        		super.onBackPressed();
+        	else if (fromWhere == "up_button") {
+        		if(t == null || !t.isAlive()) {
+        			Intent intent = new Intent(this, MainActivity.class);
+            		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                	startActivity(intent);
+        		}
+        		else {
+        			Toast.makeText(getApplicationContext(), "Still working, please wait.", Toast.LENGTH_SHORT).show();
+        		}
+        	}
+        	else if(fromWhere == "back_button") {
+        		if(t == null || !t.isAlive()) {
+        			super.onBackPressed();
+        		}
+        		//if(!t.isAlive()) {
+	        		
+        		//}
+        		
+        	}
         }
+    }
+    
+    @Override
+    public void onBackPressed() {
+    	exitDraw("back_button");
     }
 
     @Override
@@ -379,6 +420,7 @@ public class DrawMainActivity extends Activity {
 	        
 	        case R.id.action_color_change:
 	        	onColorButton();
+	        	switchActionbarIcon(true, false);
 	        	break;
 	        	
 	        case R.id.action_share:
@@ -396,10 +438,12 @@ public class DrawMainActivity extends Activity {
 	        
 	        case R.id.action_erase:
 	        	drawView.onErase(true);
+	        	switchActionbarIcon(false, true);
 	        	break;
 	        
 	        case R.id.action_draw:
 	        	drawView.onErase(false);
+	        	switchActionbarIcon(true, false);
 	        	break;
 	        
 	        case R.id.action_undo:
@@ -411,8 +455,10 @@ public class DrawMainActivity extends Activity {
 	        	break;
 	        	
 	        case android.R.id.home:
-	        	onBackPressed();
+	        	exitDraw("up_button");
+	        	//break;
 	        	return true;
+	        
         }
         
       return super.onOptionsItemSelected(item);

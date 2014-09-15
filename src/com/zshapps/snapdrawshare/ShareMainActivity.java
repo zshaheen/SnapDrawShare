@@ -16,7 +16,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
+import android.util.AttributeSet;
 import android.util.LruCache;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +25,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 
 public class ShareMainActivity extends Activity {
@@ -59,8 +60,6 @@ public class ShareMainActivity extends Activity {
         	fileNames = path.list();
         }
         
-        Log.e("fileNames.length",""+fileNames.length);
-        
         prefix = path.getPath()+"/";
         
    
@@ -90,26 +89,28 @@ public class ShareMainActivity extends Activity {
 					int position, long id) {
 				
 				if(!flag.equals("DrawMainActivity_Load")) {
+					
 					Intent sendPic = new Intent(Intent.ACTION_SEND); 
 	            	sendPic.setType("image/*");
-	            	
-	            	Log.i("send this file",dir + fileNames[position]);
 	            	sendPic.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + dir + fileNames[position]));
-	            	
 	            	startActivity(Intent.createChooser(sendPic, "Send picture"));
+	            	
 				}
 				else {
+					
 					//Just send the filename
 					Intent intent = new Intent(getBaseContext(), DrawMainActivity.class);
 					//remove .png from fileNames[position]
-		    	    String tempFileName = fileNames[position].replace(".png", "");
-		    	    intent.putExtra("picture_name", tempFileName);
-		    	    intent.putExtra("FLAG", "ShareMainActivity");
+		    	    //String tempFileName = fileNames[position].replace(".png", "");
 		    	    
+					String tempFileName = fileNames[position].substring(0, fileNames[position].lastIndexOf('.'));
+					String extension = fileNames[position].substring((fileNames[position].lastIndexOf(".") + 1), fileNames[position].length());
+
+					intent.putExtra("picture_name", tempFileName);
+		    	    intent.putExtra("picture_extension", extension);
+		    	    intent.putExtra("FLAG", "ShareMainActivity");
 		    	    startActivity(intent);
 				}
-				
-				
 			}
         });
         
@@ -178,7 +179,6 @@ public class ShareMainActivity extends Activity {
     public class ImageAdapter extends BaseAdapter {
     	
         private Context mContext;
-       // private int size = (int) getResources().getDimension(R.dimen.share_image_size);
         private Bitmap loadingBitmap = null;
         
         public ImageAdapter(Context c) {
@@ -200,8 +200,8 @@ public class ShareMainActivity extends Activity {
         
         
         // create a new ImageView for each item referenced by the Adapter
+       /*
         public View getView(int position, View convertView, ViewGroup parent) {
-        	Log.i("code work...","until here");
         	
             ImageView imageView;
             if (convertView == null) {  // if it's not recycled, initialize some attributes
@@ -217,7 +217,58 @@ public class ShareMainActivity extends Activity {
 
             return imageView;
         }
+        */
+        public View getView(int position, View convertView, ViewGroup parent) {
+        	
+            SquareImageView imageView;
+            if (convertView == null) {  // if it's not recycled, initialize some attributes
+                imageView = new SquareImageView(mContext);
+                imageView.setLayoutParams(new GridView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                imageView.setPadding(0, 0, 0, 0);
+            } else {
+                imageView = (SquareImageView) convertView;
+            }
+            
+            loadBitmap(fileNames[position], imageView, loadingBitmap );
+
+            return imageView;
+        }
     }    
+    
+    public class SquareImageView extends ImageView
+    {
+
+        public SquareImageView(final Context context)
+        {
+            super(context);
+        }
+
+        public SquareImageView(final Context context, final AttributeSet attrs)
+        {
+            super(context, attrs);
+        }
+
+        public SquareImageView(final Context context, final AttributeSet attrs, final int defStyle)
+        {
+            super(context, attrs, defStyle);
+        }
+
+
+        @Override
+        protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec)
+        {
+            final int width = getDefaultSize(getSuggestedMinimumWidth(),widthMeasureSpec);
+            setMeasuredDimension(width, width);
+        }
+
+        @Override
+        protected void onSizeChanged(final int w, final int h, final int oldw, final int oldh)
+        {
+            super.onSizeChanged(w, w, oldw, oldh);
+        }
+    }
+
     
     public static boolean cancelPotentialWork(String fileName, ImageView imageView) {
     	
@@ -253,15 +304,36 @@ public class ShareMainActivity extends Activity {
     	}
     
     
+    /*
     public void loadBitmap(String filename, ImageView imageView, Bitmap loadingImage) {
     	
     	final Bitmap bitmap = getBitmapFromMemCache(filename);
     	
     	if (bitmap != null) {
-    		Log.i("CACHE",  filename+" FROM CACHE");
+    		//Log.i("CACHE",  filename+" FROM CACHE");
     		imageView.setImageBitmap(bitmap);
     	} else {
-    		Log.i("DISK",  filename+" from DISK");
+    		//Log.i("DISK",  filename+" from DISK");
+    		if (cancelPotentialWork(filename, imageView)) {
+	    		BitmapWorkerTask task = new BitmapWorkerTask(imageView);
+	    		final AsyncDrawable asyncDrawable =
+	                    new AsyncDrawable(getResources(), loadingImage, task);
+	    		imageView.setImageDrawable(asyncDrawable);
+	    		task.execute(filename);
+    		}	
+    	}
+    }
+    */
+    
+    public void loadBitmap(String filename, SquareImageView imageView, Bitmap loadingImage) {
+    	
+    	final Bitmap bitmap = getBitmapFromMemCache(filename);
+    	
+    	if (bitmap != null) {
+    		//Log.i("CACHE",  filename+" FROM CACHE");
+    		imageView.setImageBitmap(bitmap);
+    	} else {
+    		//Log.i("DISK",  filename+" from DISK");
     		if (cancelPotentialWork(filename, imageView)) {
 	    		BitmapWorkerTask task = new BitmapWorkerTask(imageView);
 	    		final AsyncDrawable asyncDrawable =

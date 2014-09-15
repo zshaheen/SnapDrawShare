@@ -1,0 +1,27 @@
+# view AndroidManifest.xml #generated:73
+-keep class com.zshapps.snapdrawshare.DrawColorActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:63
+-keep class com.zshapps.snapdrawshare.DrawMainActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:82
+-keep class com.zshapps.snapdrawshare.DrawResizeBrushActivity { <init>(...); }
+
+# view res/layout/activity_draw_main.xml #generated:11
+-keep class com.zshapps.snapdrawshare.DrawingView { <init>(...); }
+
+# view AndroidManifest.xml #generated:34
+-keep class com.zshapps.snapdrawshare.FeedbackMainActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:23
+-keep class com.zshapps.snapdrawshare.MainActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:43
+-keep class com.zshapps.snapdrawshare.ShareMainActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:53
+-keep class com.zshapps.snapdrawshare.SnapMainActivity { <init>(...); }
+
+# onClick res/layout/activity_main.xml #generated:12
+-keepclassmembers class * { *** onSnapButton(...); }
+

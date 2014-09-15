@@ -11,10 +11,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 public class SnapMainActivity extends Activity {
@@ -27,39 +30,60 @@ public class SnapMainActivity extends Activity {
 	private File photoFile = null;
 	private String filename = "temp";
 	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_snap_main);
-		
-		Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE); 
-        if (cameraIntent.resolveActivity(getPackageManager()) != null) {
-        	// Create the File where the photo should go
-        	
-        	
-        	try {
-        		photoFile = createImageFile();
-        	} catch (IOException ex) {
-        		Toast.makeText(getApplicationContext(), "Error saving picture from camera", Toast.LENGTH_LONG).show();
-            }
-        	
-        	// Continue only if the File was successfully created
-        	if (photoFile != null) {
-        		cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
-        		startActivityForResult(cameraIntent, REQUEST_TAKE_PHOTO);
-        	}
-        }
-        
+				
+		SaveData save = new SaveData();
+		save.execute();
+ 
 	}
 	
+	private class SaveData extends AsyncTask<String, Void, Boolean>{
+
+		@Override
+		protected Boolean doInBackground(String... params) {
+		    // your background code here. Don't touch any UI components
+			Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE); 
+	        if (cameraIntent.resolveActivity(getPackageManager()) != null) {
+	        	
+	            
+	        	// Create the File where the photo should go        	        	
+	        	try {
+	        		photoFile = createImageFile();
+	        	} catch (IOException ex) {
+	        		Toast.makeText(getApplicationContext(), "Error saving picture from camera", Toast.LENGTH_LONG).show();
+	            }
+	        	
+	        	// Continue only if the File was successfully created
+	        	if (photoFile != null) {
+	        		cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+	        		startActivityForResult(cameraIntent, REQUEST_TAKE_PHOTO);
+	        		
+	        	}
+	        }
+			return null;
+			
+		}
+
+		protected void onPostExecute(Boolean result) {
+		     //This is run on the UI thread so you can do as you wish here
+		     /*if(result)
+		         Toast successful
+		     else
+		         Toast unsuccessful
+		 	*/
+		 }
+	}
+		
 	private File createImageFile() throws IOException {
 	    // Create an image file name
 		
 		String curDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
-		//Maybe put strings in values/strings.xml
 		
-		
-	    prefs = this.getSharedPreferences("com.zshapps.snapdrawshare", Context.MODE_PRIVATE);
+	    prefs = getApplicationContext().getSharedPreferences("com.zshapps.snapdrawshare", Context.MODE_PRIVATE);
 	    
 	    if (!prefs.contains(keyStoredDate)) {
 	    	prefs.edit().putString(keyStoredDate, curDate).commit();
@@ -84,9 +108,7 @@ public class SnapMainActivity extends Activity {
     		newdir.mkdirs();
     	}
 	    
-	    //String imageFileName = curDate + "_" + incr;
 	    filename = curDate + "_" + incr;
-	    Log.e("IMGNAME", filename);
 	    
 	    File image = new File(newdir, filename + ".png" );
 	    return image;
@@ -101,46 +123,15 @@ public class SnapMainActivity extends Activity {
 	        	
 	        	//Increase incr by 1 and save back in SharedPrefs
 	    	    prefs.edit().putInt(keyIncr,incr+1).commit();
-	    	   
-	    	    /*
-	    	    //Now send this picture to the draw activity. Launch the draw activity as well.
-	    	    //Convert the file to a bitmap
-	    	    BitmapFactory.Options options = new BitmapFactory.Options();
-	    	    options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-	    	    Bitmap bitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath(), options);
-	    	    Log.i("photoFile path", photoFile.getAbsolutePath());
 	    	    
-	    	    //Convert bitmap to bytearray
-	    	    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-	    	    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-	    	    byte[] byteArray = stream.toByteArray();
-	    	    
-	    	    //Send byteArray to Intent
-	    	    Intent intent = new Intent(this, DrawMainActivity.class);
-	    	    intent.putExtra("PICTURE", byteArray);
-	    	    startActivity(intent);
-	    	    */
-	    	    
-	    	    
-	    	    //Just send the filename
-	    	    
-	    	    Intent intent = new Intent(this, DrawMainActivity.class);
-	    	    
-	    	    /*
-	    	    Bundle extras = new Bundle();
-	    	    extras.putString("picture_name", filename);
-	    	    extras.putString("FLAG", "SnapMainActivity");
-	    	    intent.putExtras(extras);
-	    	     */
+	    	    //Just send the filename 
+	    	    Intent intent = new Intent(getApplicationContext(), DrawMainActivity.class);
 	    	    intent.putExtra("picture_name", filename);
-	    	    intent.putExtra("FLAG", "SnapMainActivity");
-	    	    
+	    	    intent.putExtra("picture_extension", "png");
+	    	    intent.putExtra("FLAG", "SnapMainActivity");	    	    
 	    	    startActivity(intent);
 	    	    
-	    	    finish();
-	    	    
-	    	    //TODO: Launch the draw activity with this picture on the canvas
-	    	    Log.e("snap after finish", "het");
+	    	    finish();	    	    
 	    	    
 	        }  
     		else

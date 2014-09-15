@@ -48,35 +48,102 @@ public final class R {
     }
     public static final class drawable {
         public static final int black=0x7f020000;
-        public static final int blue=0x7f020001;
-        public static final int button_draw_sel=0x7f020002;
-        public static final int button_feedback_sel=0x7f020003;
-        public static final int button_share_sel=0x7f020004;
-        public static final int button_snap_sel=0x7f020005;
-        public static final int darkblue=0x7f020006;
-        public static final int draw_icon=0x7f020007;
-        public static final int draw_text=0x7f020008;
-        public static final int feedback_icon=0x7f020009;
-        public static final int feedback_text=0x7f02000a;
-        public static final int feedback_text_large=0x7f02000b;
-        public static final int gray=0x7f02000c;
-        public static final int grey=0x7f02000d;
-        public static final int ic_action_draw=0x7f02000e;
-        public static final int ic_action_save=0x7f02000f;
-        public static final int ic_action_share=0x7f020010;
-        public static final int ic_launcher=0x7f020011;
-        public static final int limegreen=0x7f020012;
-        public static final int maroon=0x7f020013;
-        public static final int orange=0x7f020014;
-        public static final int purple=0x7f020015;
-        public static final int red=0x7f020016;
-        public static final int share_icon=0x7f020017;
-        public static final int share_text=0x7f020018;
-        public static final int skyblue=0x7f020019;
-        public static final int snap_icon=0x7f02001a;
-        public static final int snap_text=0x7f02001b;
-        public static final int white=0x7f02001c;
-        public static final int yellow=0x7f02001d;
+        public static final int button_draw_sel=0x7f020001;
+        public static final int button_feedback_sel=0x7f020002;
+        public static final int button_share_sel=0x7f020003;
+        public static final int button_snap_sel=0x7f020004;
+        public static final int c00x00=0x7f020005;
+        public static final int c00x01=0x7f020006;
+        public static final int c00x02=0x7f020007;
+        public static final int c00x03=0x7f020008;
+        public static final int c00x04=0x7f020009;
+        public static final int c00x05=0x7f02000a;
+        public static final int c01x00=0x7f02000b;
+        public static final int c01x01=0x7f02000c;
+        public static final int c01x02=0x7f02000d;
+        public static final int c01x03=0x7f02000e;
+        public static final int c01x04=0x7f02000f;
+        public static final int c01x05=0x7f020010;
+        public static final int c02x00=0x7f020011;
+        public static final int c02x01=0x7f020012;
+        public static final int c02x02=0x7f020013;
+        public static final int c02x03=0x7f020014;
+        public static final int c02x04=0x7f020015;
+        public static final int c02x05=0x7f020016;
+        public static final int c03x00=0x7f020017;
+        public static final int c03x01=0x7f020018;
+        public static final int c03x02=0x7f020019;
+        public static final int c03x03=0x7f02001a;
+        public static final int c03x04=0x7f02001b;
+        public static final int c03x05=0x7f02001c;
+        public static final int c04x00=0x7f02001d;
+        public static final int c04x01=0x7f02001e;
+        public static final int c04x02=0x7f02001f;
+        public static final int c04x03=0x7f020020;
+        public static final int c04x04=0x7f020021;
+        public static final int c04x05=0x7f020022;
+        public static final int c05x00=0x7f020023;
+        public static final int c05x01=0x7f020024;
+        public static final int c05x02=0x7f020025;
+        public static final int c05x03=0x7f020026;
+        public static final int c05x04=0x7f020027;
+        public static final int c05x05=0x7f020028;
+        public static final int c06x00=0x7f020029;
+        public static final int c06x01=0x7f02002a;
+        public static final int c06x02=0x7f02002b;
+        public static final int c06x03=0x7f02002c;
+        public static final int c06x04=0x7f02002d;
+        public static final int c06x05=0x7f02002e;
+        public static final int c07x00=0x7f02002f;
+        public static final int c07x01=0x7f020030;
+        public static final int c07x02=0x7f020031;
+        public static final int c07x03=0x7f020032;
+        public static final int c07x04=0x7f020033;
+        public static final int c07x05=0x7f020034;
+        public static final int c08x00=0x7f020035;
+        public static final int c08x01=0x7f020036;
+        public static final int c08x02=0x7f020037;
+        public static final int c08x03=0x7f020038;
+        public static final int c08x04=0x7f020039;
+        public static final int c08x05=0x7f02003a;
+        public static final int c09x00=0x7f02003b;
+        public static final int c09x01=0x7f02003c;
+        public static final int c09x02=0x7f02003d;
+        public static final int c09x03=0x7f02003e;
+        public static final int c09x04=0x7f02003f;
+        public static final int c09x05=0x7f020040;
+        public static final int c10x00=0x7f020041;
+        public static final int c10x01=0x7f020042;
+        public static final int c10x02=0x7f020043;
+        public static final int c10x03=0x7f020044;
+        public static final int c10x04=0x7f020045;
+        public static final int c10x05=0x7f020046;
+        public static final int c11x00=0x7f020047;
+        public static final int c11x01=0x7f020048;
+        public static final int c11x02=0x7f020049;
+        public static final int c11x03=0x7f02004a;
+        public static final int c11x04=0x7f02004b;
+        public static final int c11x05=0x7f02004c;
+        public static final int draw_icon=0x7f02004d;
+        public static final int draw_icon_new=0x7f02004e;
+        public static final int feedback_icon=0x7f02004f;
+        public static final int gray=0x7f020050;
+        public static final int grey=0x7f020051;
+        public static final int ic_acition_resize=0x7f020052;
+        public static final int ic_action_draw=0x7f020053;
+        public static final int ic_action_draw_black=0x7f020054;
+        public static final int ic_action_erase=0x7f020055;
+        public static final int ic_action_erase_black=0x7f020056;
+        public static final int ic_action_overflow=0x7f020057;
+        public static final int ic_action_redo=0x7f020058;
+        public static final int ic_action_resize=0x7f020059;
+        public static final int ic_action_save=0x7f02005a;
+        public static final int ic_action_share=0x7f02005b;
+        public static final int ic_action_undo=0x7f02005c;
+        public static final int ic_launcher=0x7f02005d;
+        public static final int share_icon=0x7f02005e;
+        public static final int snap_icon=0x7f02005f;
+        public static final int white=0x7f020060;
     }
     public static final class id {
         public static final int action_color_change=0x7f090017;
@@ -177,19 +244,25 @@ public final class R {
  All customizations that are NOT specific to a particular API-level can go here. 
          */
         public static final int AppTheme=0x7f070001;
+        /**  Main Activity 
+         */
+        public static final int DialogTheme=0x7f070002;
         /**  Draw Theme 
          */
-        public static final int DrawTheme=0x7f070003;
-        public static final int DrawTheme_ActionBar=0x7f070004;
-        public static final int DrawTheme_ActionBar_Text=0x7f070005;
+        public static final int DrawTheme=0x7f070004;
+        /**  
+         */
+        public static final int DrawTheme_ActionBar=0x7f070005;
+        public static final int DrawTheme_ActionBar_OverFlow=0x7f070007;
+        public static final int DrawTheme_ActionBar_Text=0x7f070006;
         /**  Share Theme 
          */
-        public static final int ShareTheme=0x7f070006;
-        public static final int ShareTheme_ActionBar=0x7f070007;
-        public static final int ShareTheme_ActionBar_Text=0x7f070008;
+        public static final int ShareTheme=0x7f070008;
+        public static final int ShareTheme_ActionBar=0x7f070009;
+        public static final int ShareTheme_ActionBar_Text=0x7f07000a;
         /**  Button Text Style 
  Button Text Style 
          */
-        public static final int button_text_style=0x7f070002;
+        public static final int button_text_style=0x7f070003;
     }
 }

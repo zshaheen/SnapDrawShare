@@ -8,7 +8,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -45,8 +44,6 @@ public class DrawResizeBrushActivity extends Activity {
 		buttonOk.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             	DrawingView.setBrushSize(size);
-            	Log.i("Brush size", ""+size);
-            	Log.i("Seekbar progress", ""+sizeBar.getProgress());
             	finish();
             }
         });
@@ -73,7 +70,6 @@ public class DrawResizeBrushActivity extends Activity {
 	    	paint.setColor(DrawingView.getPaintColor());
 	    	
 	    
-	    //float radius = (sizeDP * scale + 0.5f)/2;
 	    float r = (DrawingView.getBrushSize() * scale + 0.5f);
 	    
 	    c.drawCircle(maxDialogWidth/2, maxDialogWidth/2, (float) Math.ceil(r/2), paint);
@@ -94,13 +90,14 @@ public class DrawResizeBrushActivity extends Activity {
   		    public void onStartTrackingTouch(SeekBar seekBar) {}       
 
   		    public void onProgressChanged(SeekBar seekBar, int progress,boolean fromUser) { 
+  		    	
   		    	size = progress;
   		    	//First clear the bitmap
   		    	bmp.eraseColor(android.R.color.white);
   		    	//then draw a circle
   		    	float radius = (float) ((size * scale + 0.5f)/2);
-  		    	//Log.i("raduis", ""+radius);
   		    	c.drawCircle(maxDialogWidth/2, maxDialogWidth/2, (float) Math.ceil(radius) , paint);
+  		    	
   		    	if(DrawingView.erase) {
   			    	paint.setColor(0xFFFFFFFF);
   			    	c.drawCircle(maxDialogWidth/2, maxDialogWidth/2, (float) Math.ceil((radius-(1 * scale + 0.5f))), paint);
@@ -109,9 +106,6 @@ public class DrawResizeBrushActivity extends Activity {
   		    	imageview.setImageDrawable(new BitmapDrawable(getResources(), bmp));
   		      
   		    }
-  			
   		});
-	  		
 	}
-
 }

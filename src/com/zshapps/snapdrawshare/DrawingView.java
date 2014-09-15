@@ -16,7 +16,6 @@ import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -27,34 +26,31 @@ import android.widget.Toast;
 
 public class DrawingView extends View {
 	
-	//drawing path that is what the user touches
+
 	private static Path drawPath;
+	
 	//drawing and canvas paint
 	//the user paths are drawn with drawPaint
 	//this path is then drawn on the canvas by canvasPaint
 	public static Paint drawPaint;
-	private Paint canvasPaint;
-	//initial color
 	private static int paintColor;
 	private static int paintBrushSize;
-	//canvas
+
+	private Paint canvasPaint;
 	private Canvas drawCanvas;
-	//canvas bitmap
 	public Bitmap canvasBitmap, tempBmp, resizeBmp;
 	
 	private static float scale = 0; 
-	
 	public static boolean erase = false;
 
 	private float xOffset=0, yOffset=0;
 	
-	
 	private ArrayList<pathAndPaint> strokes = new ArrayList<pathAndPaint>();
 	private ArrayList<pathAndPaint> redoStrokes = new ArrayList<pathAndPaint>();
-	private Path mPath;
 	
+	private static int currColorSel = 0;
 	private Boolean changesMade;
-
+	
 	
 	public class pathAndPaint {
 		
@@ -79,13 +75,8 @@ public class DrawingView extends View {
 	
 	public DrawingView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		setupDrawing();
-	}
-	
-	private void setupDrawing() {
-		
 		changesMade = false;
-		
+		currColorSel = 69; //'black.png' position in DrawColorActivity
 		drawPath = new Path();
 		drawPaint = new Paint();
 		
@@ -112,10 +103,7 @@ public class DrawingView extends View {
 		options.inPreferredConfig = Bitmap.Config.ARGB_8888;
 		tempBmp = BitmapFactory.decodeFile(dir+"pic.png",options);
 		*/
-		
-		mPath = new Path();
 	}
-	
 	
 	public void onErase(boolean val) {
 		erase = val;
@@ -134,6 +122,14 @@ public class DrawingView extends View {
 	public static int getPaintColor() {
 		return paintColor;
 		
+	}
+	
+	public static void setCurrColorSel(int index) {
+		currColorSel = index;
+	}
+	
+	public static int getCurrColorSel() {
+		return currColorSel;
 	}
 	
 	public static void setBrushSize(int size) {
@@ -187,8 +183,8 @@ public class DrawingView extends View {
 			//Now calculate how off the width (offsetX) should be
 			xOffset = -(newWidth - canvasBitmap.getWidth())/2;
 			
-			Log.i("portrait resize HEIGHT",""+h);
-			Log.i("portrait resize WIDTH",""+newWidth);
+			//Log.i("portrait resize HEIGHT",""+h);
+			//Log.i("portrait resize WIDTH",""+newWidth);
 			
 			//Log.i("newWidthPORTRAIT",""+newWidth);
 		}
@@ -211,7 +207,7 @@ public class DrawingView extends View {
 			
 		}
 		
-		Log.i("offsetX", ""+xOffset);
+		//Log.i("offsetX", ""+xOffset);
 		/* orig
 		centerCropBitmap(canvasBitmap, w, h);
 		resizeBmp = canvasBitmap;//Bitmap.createScaledBitmap(tempBmp, w, h, false);
@@ -260,9 +256,7 @@ public class DrawingView extends View {
 	
 	
 	public void onUndo() {
-		/*paths.get(paths.size()-1).reset();
-		drawCanvas.drawPath(paths.get(paths.size()-1) , drawPaints.get(paths.size()-1));
-		*/
+		
 		//Reload the canvas, clearing it of the paths
 		
 		if(strokes.size() > 0) {
@@ -270,12 +264,9 @@ public class DrawingView extends View {
 			drawCanvas.drawBitmap(resizeBmp, xOffset, yOffset, canvasPaint);
 			drawCanvas.drawBitmap(canvasBitmap, 0, 0, canvasPaint);
 			
-			
 			//Pop the last path from ArrayList paths
 			redoStrokes.add(strokes.get(strokes.size()-1));
 			strokes.remove(strokes.size()-1); 
-			//paths.remove(paths.size()-1);
-			//drawPaints.remove(drawPaints.size()-1);
 			
 			//Redraw the paths
 			for(int i = 0; i<strokes.size(); i++) {
@@ -290,6 +281,7 @@ public class DrawingView extends View {
 	
 	
 	public void onRedo() {
+		
 		if(redoStrokes.size() > 0) {
 			//add last item on redoStrokes back to stokes
 			strokes.add(redoStrokes.get(redoStrokes.size()-1) );
@@ -306,15 +298,11 @@ public class DrawingView extends View {
 		else {
 			Toast.makeText(getContext(), "Nothing left to redo.", Toast.LENGTH_SHORT).show();
 		}
+		
 	}
 	
 	@Override
 	protected void onDraw(Canvas canvas) {
-		
-		/*canvas.drawBitmap(resizeBmp, xOffset, yOffset, canvasPaint);
-		canvas.drawBitmap(canvasBitmap, 0, 0, canvasPaint);
-		canvas.drawPath(drawPath, drawPaint);
-		setDrawingCacheEnabled(true);*/
 		
 		canvas.drawBitmap(resizeBmp, xOffset, yOffset, canvasPaint);
 		canvas.drawBitmap(canvasBitmap, 0, 0, canvasPaint);
@@ -328,8 +316,10 @@ public class DrawingView extends View {
 			canvas.drawPath(paths.get(i), drawPaints.get(i));
 		}*/
 		
-		
-		canvas.drawPath(drawPath, drawPaint);
+		if(!erase) {
+			canvas.drawPath(drawPath, drawPaint);
+		}
+		//canvas.drawPath(mPath, drawPaint);
 		setDrawingCacheEnabled(true);
 	}
 	
@@ -338,47 +328,16 @@ public class DrawingView extends View {
 		float touchX = event.getX();
 		float touchY = event.getY();
 		
-		/*switch (event.getAction()) {
-		case MotionEvent.ACTION_DOWN:
-		    drawPath.moveTo(touchX, touchY);
-		    drawPath.lineTo(touchX+0.001f, touchY+0.001f);
-		    //if(erase) {
-		    	drawCanvas.drawPath(drawPath, drawPaint);
-		    	drawPath.reset();
-		    	drawPath.moveTo(touchX, touchY);
-		    //}
-		    break;
-		case MotionEvent.ACTION_MOVE:
-		    drawPath.lineTo(touchX, touchY);
-		    //if(erase) {
-		    	drawCanvas.drawPath(drawPath, drawPaint);
-		    	drawPath.reset();
-		    	drawPath.moveTo(touchX, touchY);
-		   // }
-		    break;
-		case MotionEvent.ACTION_UP:
-		    drawCanvas.drawPath(drawPath, drawPaint);
-		    drawPath.reset();
-		    break;
-		default:
-		    return false;
-		}*/
-		
 		switch (event.getAction()) {
 
 			case MotionEvent.ACTION_DOWN:
 				touch_start(touchX, touchY);
-				//invalidate();
 			    break;
 			case MotionEvent.ACTION_MOVE:
 			    touch_move(touchX, touchY);
-			    //invalidate();
 			    break;
 			case MotionEvent.ACTION_UP:
-				
-				//Log.i("pathsLength",""+strokes.size());
 				touch_up(touchX, touchY);
-				//invalidate();
 			    break;
 			default:
 			    return false;
@@ -393,41 +352,26 @@ public class DrawingView extends View {
 	{
 		changesMade = true;
 		redoStrokes.clear();
-		mPath.reset();
-		mPath.moveTo(x, y);
-		mPath.lineTo(x+0.001f, y+0.001f);
-		//mPath.lineTo(x, y);
+		drawPath.reset();
+		drawPath.moveTo(x, y);
+		drawPath.lineTo(x+0.001f, y+0.001f);
 	}
 
 	private void touch_move(float x, float y) 
 	{
-		mPath.lineTo(x, y); 
-		
-		drawCanvas.drawPath(mPath, drawPaint);
-		//invalidate();
+		drawPath.lineTo(x, y); 
+		if(erase) {
+			drawCanvas.drawPath(drawPath, drawPaint);
+		}
 	}  
 
 	private void touch_up(float x, float y) 
 	{
-		//mPath.lineTo(x, y); 
-	    drawCanvas.drawPath(mPath, drawPaint);
-	    //bitmapCanvas.drawPath(mPath, paintLine);// commit the path to our offscreen 
+	    drawCanvas.drawPath(drawPath, drawPaint);
 	    
-	    /*
-	    if(paths.size() > undoRedoSize) {
-	    	//pop the first path and drawPaint
-	    	paths.remove(0);
-			drawPaints.remove(0);
-	    }*/
+	    strokes.add(new pathAndPaint(drawPath, drawPaint));
 	    
-	    strokes.add(new pathAndPaint(mPath, drawPaint));
-	    //paths.add(mPath);
-	    //drawPaints.add(drawPaint);
-		
-	    
-	    
-	    
-	    mPath = new Path(); 
+	    drawPath = new Path(); 
 	    drawPaint = new Paint();
 		drawPaint.setColor(paintColor);
 		drawPaint.setAntiAlias(true);
